@@ -909,7 +909,10 @@
           <div class="section">
             <div class="grid-2">
               <div class="panel">
-                <div class="section-title">Foto do aluno</div>
+                <div class="section-title">Foto do atleta</div>
+                <div class="small-note" style="margin-bottom:12px;">
+                  A foto pode ser adicionada depois, direto no perfil do atleta.
+                </div>
                 <input id="fotoAlunoInput" type="file" accept="image/png,image/jpeg,image/webp" class="file-input" />
                 <button id="enviarFotoAlunoBtn" class="btn btn-primary btn-full" style="margin-top:12px;">Enviar foto</button>
                 <div id="fotoAlunoMsg" class="message"></div>
@@ -1045,6 +1048,10 @@
             <div class="grid-2">
               <div class="panel">
                 <div class="section-title">Cadastrar aluno</div>
+
+                <div class="small-note" style="margin-bottom:14px;">
+                  A foto não é obrigatória no cadastro. Ela pode ser adicionada depois no perfil do atleta.
+                </div>
 
                 <div class="grid-2">
                   <div class="form-group">
@@ -1235,6 +1242,23 @@
                   </div>
 
                   <div id="adminQrMsg" class="message"></div>
+
+                  <div class="section">
+                    <div class="section-title">Adicionar foto depois</div>
+
+                    <div class="form-group">
+                      <label class="label" for="adminFotoAlunoId">ID do aluno</label>
+                      <input id="adminFotoAlunoId" class="input" type="text" placeholder="Digite o ID do aluno" />
+                    </div>
+
+                    <div class="form-group">
+                      <label class="label" for="adminFotoAlunoInput">Selecionar foto</label>
+                      <input id="adminFotoAlunoInput" type="file" accept="image/png,image/jpeg,image/webp" class="file-input" />
+                    </div>
+
+                    <button id="enviarFotoAdminBtn" class="btn btn-primary btn-full">Enviar foto do aluno</button>
+                    <div id="adminFotoMsg" class="message"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1485,6 +1509,11 @@
     const adminCardAlunoQrText = document.getElementById("adminCardAlunoQrText");
     const adminCardAlunoFoto = document.getElementById("adminCardAlunoFoto");
     const imprimirCarteirinhaAdminBtn = document.getElementById("imprimirCarteirinhaAdminBtn");
+
+    const adminFotoAlunoId = document.getElementById("adminFotoAlunoId");
+    const adminFotoAlunoInput = document.getElementById("adminFotoAlunoInput");
+    const enviarFotoAdminBtn = document.getElementById("enviarFotoAdminBtn");
+    const adminFotoMsg = document.getElementById("adminFotoMsg");
 
     const editModalBackdrop = document.getElementById("editModalBackdrop");
     const editId = document.getElementById("editId");
@@ -2093,8 +2122,11 @@
       clearMessage(listaMsg);
       clearMessage(qrMsg);
       clearMessage(adminQrMsg);
+      clearMessage(adminFotoMsg);
       qrInputManual.value = "";
       qrAlunoIdBusca.value = "";
+      adminFotoAlunoId.value = "";
+      adminFotoAlunoInput.value = "";
       preencherCarteirinha("admin", null);
       await stopQrScanner();
     }
@@ -2311,6 +2343,7 @@
         const aluno = alunosCache[Number(btn.dataset.index)];
         if (aluno) {
           preencherCarteirinha("admin", aluno);
+          adminFotoAlunoId.value = aluno.id || "";
           showMessage(adminQrMsg, `Carteirinha carregada para ${aluno.nome || "aluno"}.`, "info");
         }
         return;
@@ -2426,6 +2459,7 @@
         }
 
         preencherCarteirinha("admin", data.aluno);
+        adminFotoAlunoId.value = id;
         showMessage(adminQrMsg, `Carteirinha carregada para ${data.aluno.nome}.`, "success");
 
       } catch (error) {
@@ -2583,6 +2617,67 @@
       }
     }
 
+    async function enviarFotoAlunoPeloAdmin() {
+      clearMessage(adminFotoMsg);
+
+      const id = adminFotoAlunoId.value.trim();
+      const file = adminFotoAlunoInput.files?.[0];
+
+      if (!id) {
+        showMessage(adminFotoMsg, "Informe o ID do aluno.", "warning");
+        return;
+      }
+
+      if (!file) {
+        showMessage(adminFotoMsg, "Selecione uma foto.", "warning");
+        return;
+      }
+
+      if (!["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file.type)) {
+        showMessage(adminFotoMsg, "Formato inválido. Use JPG, PNG ou WEBP.", "error");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        showMessage(adminFotoMsg, "A foto deve ter no máximo 5 MB.", "warning");
+        return;
+      }
+
+      try {
+        setButtonLoading(enviarFotoAdminBtn, true, "Enviar foto do aluno", "Enviando...");
+
+        const base64 = await fileToBase64(file);
+
+        const data = await apiPost({
+          action: "uploadFotoAluno",
+          id,
+          fileName: file.name,
+          mimeType: file.type,
+          base64: base64
+        });
+
+        if (!data.sucesso) {
+          showMessage(adminFotoMsg, data.mensagem || "Não foi possível enviar a foto.", "error");
+          return;
+        }
+
+        showMessage(adminFotoMsg, "Foto enviada com sucesso.", "success");
+        adminFotoAlunoInput.value = "";
+
+        const alunoAtualizado = await apiGet({ action: "listarAluno", id });
+        if (alunoAtualizado.sucesso && alunoAtualizado.aluno) {
+          preencherCarteirinha("admin", alunoAtualizado.aluno);
+        }
+
+        await carregarListaAlunos();
+
+      } catch (error) {
+        showMessage(adminFotoMsg, "Erro ao enviar foto do aluno.", "error");
+      } finally {
+        setButtonLoading(enviarFotoAdminBtn, false, "Enviar foto do aluno");
+      }
+    }
+
     fotoAlunoInput.addEventListener("change", () => {
       const file = fotoAlunoInput.files?.[0];
       if (!file) {
@@ -2642,6 +2737,7 @@
     iniciarCameraBtn.addEventListener("click", startQrScanner);
     pararCameraBtn.addEventListener("click", stopQrScanner);
     imprimirCarteirinhaAdminBtn.addEventListener("click", () => imprimirElemento("adminPrintCardArea"));
+    enviarFotoAdminBtn.addEventListener("click", enviarFotoAlunoPeloAdmin);
 
     preencherCarteirinha("aluno", null);
     preencherCarteirinha("admin", null);
