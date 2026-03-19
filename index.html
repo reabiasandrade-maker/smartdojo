@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart Dojo PRO v5</title>
+  <title>Smart Dojo PRO v6</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,14 +42,13 @@
     body{
       font-family:'Inter',sans-serif;
       color:var(--text);
-      background:
-        radial-gradient(circle at top left, #ffffff 0%, #eef4fb 40%, #f4f7fb 100%);
+      background:radial-gradient(circle at top left, #ffffff 0%, #eef4fb 40%, #f4f7fb 100%);
       min-height:100vh;
       padding:18px;
     }
 
     .app{
-      max-width:1360px;
+      max-width:1420px;
       margin:0 auto;
     }
 
@@ -186,7 +185,7 @@
       margin-bottom:8px;
     }
 
-    .input, .select{
+    .input, .select, .textarea{
       width:100%;
       min-height:52px;
       border-radius:16px;
@@ -198,6 +197,12 @@
       background:#fff;
       color:var(--text);
       font-family:inherit;
+    }
+
+    .textarea{
+      min-height:110px;
+      padding:14px 16px;
+      resize:vertical;
     }
 
     .file-input{
@@ -213,7 +218,7 @@
       font-family:inherit;
     }
 
-    .input:focus, .select:focus, .file-input:focus{
+    .input:focus, .select:focus, .file-input:focus, .textarea:focus{
       border-color:#94a3b8;
       box-shadow:0 0 0 4px rgba(148,163,184,.14);
     }
@@ -370,7 +375,7 @@
     table{
       width:100%;
       border-collapse:collapse;
-      min-width:1160px;
+      min-width:1550px;
     }
 
     th, td{
@@ -475,6 +480,7 @@
       justify-content:center;
       padding:20px;
       z-index:999;
+      overflow:auto;
     }
 
     .modal-backdrop.show{
@@ -483,7 +489,7 @@
 
     .modal{
       width:100%;
-      max-width:700px;
+      max-width:820px;
       background:#fff;
       border-radius:24px;
       box-shadow:0 20px 60px rgba(15,23,42,.25);
@@ -806,7 +812,7 @@
       <div class="brand">
         <div class="brand-logo">柔</div>
         <div>
-          <h1>Smart Dojo PRO v5</h1>
+          <h1>Smart Dojo PRO v6</h1>
           <p>Presença, QR Code, histórico, foto, gestão e carteirinha</p>
         </div>
       </div>
@@ -1040,30 +1046,71 @@
               <div class="panel">
                 <div class="section-title">Cadastrar aluno</div>
 
-                <div class="form-group">
-                  <label class="label" for="cadNome">Nome do aluno</label>
-                  <input id="cadNome" class="input" type="text" placeholder="Ex.: João Silva" />
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label class="label" for="cadNome">Nome do aluno</label>
+                    <input id="cadNome" class="input" type="text" placeholder="Ex.: João Silva" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="label" for="cadSenha">Senha do aluno</label>
+                    <input id="cadSenha" class="input" type="text" placeholder="Ex.: 1234" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="label" for="cadNascimento">Nascimento</label>
+                    <input id="cadNascimento" class="input" type="date" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="label" for="cadSexo">Sexo</label>
+                    <select id="cadSexo" class="select">
+                      <option value="">Selecione</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Feminino">Feminino</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="label" for="cadCategoria">Categoria</label>
+                    <input id="cadCategoria" class="input" type="text" placeholder="Ex.: Sub-15 / Adulto / -73kg" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="label" for="cadFaixa">Faixa atual</label>
+                    <select id="cadFaixa" class="select">
+                      <option value="">Selecione</option>
+                      <option value="Branca">Branca</option>
+                      <option value="Cinza">Cinza</option>
+                      <option value="Azul">Azul</option>
+                      <option value="Amarela">Amarela</option>
+                      <option value="Laranja">Laranja</option>
+                      <option value="Verde">Verde</option>
+                      <option value="Roxa">Roxa</option>
+                      <option value="Marrom">Marrom</option>
+                      <option value="Preta">Preta</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="label" for="cadPeso">Peso</label>
+                    <input id="cadPeso" class="input" type="text" placeholder="Ex.: 73,5 kg" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="label" for="cadTelefone">Telefone</label>
+                    <input id="cadTelefone" class="input" type="text" placeholder="Ex.: (83) 99999-9999" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="label" for="cadEmail">Email</label>
+                    <input id="cadEmail" class="input" type="email" placeholder="Ex.: aluno@email.com" />
+                  </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="label" for="cadSenha">Senha do aluno</label>
-                  <input id="cadSenha" class="input" type="text" placeholder="Ex.: 1234" />
-                </div>
-
-                <div class="form-group">
-                  <label class="label" for="cadFaixa">Faixa atual</label>
-                  <select id="cadFaixa" class="select">
-                    <option value="">Selecione</option>
-                    <option value="Branca">Branca</option>
-                    <option value="Cinza">Cinza</option>
-                    <option value="Azul">Azul</option>
-                    <option value="Amarela">Amarela</option>
-                    <option value="Laranja">Laranja</option>
-                    <option value="Verde">Verde</option>
-                    <option value="Roxa">Roxa</option>
-                    <option value="Marrom">Marrom</option>
-                    <option value="Preta">Preta</option>
-                  </select>
+                  <label class="label" for="cadObservacoes">Observações</label>
+                  <textarea id="cadObservacoes" class="textarea" placeholder="Informações adicionais do aluno"></textarea>
                 </div>
 
                 <button id="cadastrarAlunoBtn" class="btn btn-success btn-full">Cadastrar aluno</button>
@@ -1197,7 +1244,7 @@
                 <div class="top-info">
                   <div>
                     <div class="section-title">Lista de alunos</div>
-                    <div class="small-note">Você pode buscar, editar, ativar, inativar, visualizar QR Code e gerar carteirinha.</div>
+                    <div class="small-note">Você pode buscar, editar, ativar, inativar, visualizar QR Code e gerar carteirinhas.</div>
                   </div>
                 </div>
 
@@ -1216,7 +1263,13 @@
                         <th>Foto</th>
                         <th>ID</th>
                         <th>Nome</th>
+                        <th>Nascimento</th>
+                        <th>Sexo</th>
+                        <th>Categoria</th>
                         <th>Faixa Atual</th>
+                        <th>Peso</th>
+                        <th>Telefone</th>
+                        <th>Email</th>
                         <th>Total Aulas</th>
                         <th>Próxima Faixa</th>
                         <th>Faltam</th>
@@ -1227,7 +1280,7 @@
                     </thead>
                     <tbody id="alunosTableBody">
                       <tr>
-                        <td colspan="10">Nenhum dado carregado.</td>
+                        <td colspan="16">Nenhum dado carregado.</td>
                       </tr>
                     </tbody>
                   </table>
@@ -1246,34 +1299,75 @@
     <div class="modal">
       <div class="modal-header">
         <div class="card-title">Editar aluno</div>
-        <div class="card-subtitle">Atualize nome, senha e faixa atual do aluno.</div>
+        <div class="card-subtitle">Atualize os dados completos do aluno.</div>
       </div>
       <div class="modal-body">
         <input type="hidden" id="editId" />
 
-        <div class="form-group">
-          <label class="label" for="editNome">Nome</label>
-          <input id="editNome" class="input" type="text" />
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="label" for="editNome">Nome</label>
+            <input id="editNome" class="input" type="text" />
+          </div>
+
+          <div class="form-group">
+            <label class="label" for="editSenha">Senha</label>
+            <input id="editSenha" class="input" type="text" placeholder="Deixe em branco para manter" />
+          </div>
+
+          <div class="form-group">
+            <label class="label" for="editNascimento">Nascimento</label>
+            <input id="editNascimento" class="input" type="date" />
+          </div>
+
+          <div class="form-group">
+            <label class="label" for="editSexo">Sexo</label>
+            <select id="editSexo" class="select">
+              <option value="">Selecione</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Feminino">Feminino</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="label" for="editCategoria">Categoria</label>
+            <input id="editCategoria" class="input" type="text" />
+          </div>
+
+          <div class="form-group">
+            <label class="label" for="editFaixa">Faixa atual</label>
+            <select id="editFaixa" class="select">
+              <option value="Branca">Branca</option>
+              <option value="Cinza">Cinza</option>
+              <option value="Azul">Azul</option>
+              <option value="Amarela">Amarela</option>
+              <option value="Laranja">Laranja</option>
+              <option value="Verde">Verde</option>
+              <option value="Roxa">Roxa</option>
+              <option value="Marrom">Marrom</option>
+              <option value="Preta">Preta</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="label" for="editPeso">Peso</label>
+            <input id="editPeso" class="input" type="text" />
+          </div>
+
+          <div class="form-group">
+            <label class="label" for="editTelefone">Telefone</label>
+            <input id="editTelefone" class="input" type="text" />
+          </div>
+
+          <div class="form-group">
+            <label class="label" for="editEmail">Email</label>
+            <input id="editEmail" class="input" type="email" />
+          </div>
         </div>
 
         <div class="form-group">
-          <label class="label" for="editSenha">Senha</label>
-          <input id="editSenha" class="input" type="text" />
-        </div>
-
-        <div class="form-group">
-          <label class="label" for="editFaixa">Faixa atual</label>
-          <select id="editFaixa" class="select">
-            <option value="Branca">Branca</option>
-            <option value="Cinza">Cinza</option>
-            <option value="Azul">Azul</option>
-            <option value="Amarela">Amarela</option>
-            <option value="Laranja">Laranja</option>
-            <option value="Verde">Verde</option>
-            <option value="Roxa">Roxa</option>
-            <option value="Marrom">Marrom</option>
-            <option value="Preta">Preta</option>
-          </select>
+          <label class="label" for="editObservacoes">Observações</label>
+          <textarea id="editObservacoes" class="textarea"></textarea>
         </div>
 
         <div class="modal-actions">
@@ -1289,7 +1383,13 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbx9UCnurk7c9pTXMro02sgDp2xzxNpGu2TATIBXPqi-daB6bWJvVyf966kXzlbEOxMZ/exec";
     const ADMIN_PASSWORD = "judopro2026";
-    const PLACEHOLDER_FOTO = "https://via.placeholder.com/120x120?text=Foto";
+    const PLACEHOLDER_FOTO = "data:image/svg+xml;utf8," + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+        <rect width="100%" height="100%" rx="18" fill="#e5e7eb"/>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+          font-family="Arial, sans-serif" font-size="18" fill="#64748b">Foto</text>
+      </svg>
+    `);
 
     const showAlunoBtn = document.getElementById("showAlunoBtn");
     const showAdminBtn = document.getElementById("showAdminBtn");
@@ -1346,7 +1446,14 @@
 
     const cadNome = document.getElementById("cadNome");
     const cadSenha = document.getElementById("cadSenha");
+    const cadNascimento = document.getElementById("cadNascimento");
+    const cadSexo = document.getElementById("cadSexo");
+    const cadCategoria = document.getElementById("cadCategoria");
     const cadFaixa = document.getElementById("cadFaixa");
+    const cadPeso = document.getElementById("cadPeso");
+    const cadTelefone = document.getElementById("cadTelefone");
+    const cadEmail = document.getElementById("cadEmail");
+    const cadObservacoes = document.getElementById("cadObservacoes");
     const cadastrarAlunoBtn = document.getElementById("cadastrarAlunoBtn");
     const cadastroMsg = document.getElementById("cadastroMsg");
 
@@ -1383,7 +1490,14 @@
     const editId = document.getElementById("editId");
     const editNome = document.getElementById("editNome");
     const editSenha = document.getElementById("editSenha");
+    const editNascimento = document.getElementById("editNascimento");
+    const editSexo = document.getElementById("editSexo");
+    const editCategoria = document.getElementById("editCategoria");
     const editFaixa = document.getElementById("editFaixa");
+    const editPeso = document.getElementById("editPeso");
+    const editTelefone = document.getElementById("editTelefone");
+    const editEmail = document.getElementById("editEmail");
+    const editObservacoes = document.getElementById("editObservacoes");
     const salvarEdicaoBtn = document.getElementById("salvarEdicaoBtn");
     const fecharModalBtn = document.getElementById("fecharModalBtn");
     const editMsg = document.getElementById("editMsg");
@@ -1462,7 +1576,7 @@
     }
 
     function escapeHtml(value) {
-      return String(value)
+      return String(value ?? "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
@@ -1701,11 +1815,47 @@
       win.document.close();
     }
 
+    function toInputDate(value) {
+      if (!value) return "";
+      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
+        const [d, m, y] = value.split("/");
+        return `${y}-${m}-${d}`;
+      }
+
+      const dt = new Date(value);
+      if (!isNaN(dt.getTime())) {
+        const y = dt.getFullYear();
+        const m = String(dt.getMonth() + 1).padStart(2, "0");
+        const d = String(dt.getDate()).padStart(2, "0");
+        return `${y}-${m}-${d}`;
+      }
+
+      return "";
+    }
+
+    function formatBirth(value) {
+      if (!value) return "-";
+      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        const [y, m, d] = value.split("-");
+        return `${d}/${m}/${y}`;
+      }
+      return value;
+    }
+
     function openEditModal(aluno) {
       editId.value = aluno.id || "";
       editNome.value = aluno.nome || "";
       editSenha.value = "";
+      editNascimento.value = toInputDate(aluno.nascimento || "");
+      editSexo.value = aluno.sexo || "";
+      editCategoria.value = aluno.categoria || "";
       editFaixa.value = aluno.faixaAtual || "Branca";
+      editPeso.value = aluno.peso || "";
+      editTelefone.value = aluno.telefone || "";
+      editEmail.value = aluno.email || "";
+      editObservacoes.value = aluno.observacoes || "";
       clearMessage(editMsg);
       editModalBackdrop.classList.add("show");
     }
@@ -1980,7 +2130,14 @@
 
       const nome = cadNome.value.trim();
       const senha = cadSenha.value.trim();
+      const nascimento = cadNascimento.value.trim();
+      const sexo = cadSexo.value.trim();
+      const categoria = cadCategoria.value.trim();
       const faixaAtual = cadFaixa.value.trim();
+      const peso = cadPeso.value.trim();
+      const telefone = cadTelefone.value.trim();
+      const email = cadEmail.value.trim();
+      const observacoes = cadObservacoes.value.trim();
 
       if (!nome || !senha || !faixaAtual) {
         showMessage(cadastroMsg, "Preencha nome, senha e faixa atual.", "warning");
@@ -1994,7 +2151,14 @@
           action: "cadastrarAluno",
           nome,
           senha,
-          faixaAtual
+          nascimento,
+          sexo,
+          categoria,
+          faixaAtual,
+          peso,
+          telefone,
+          email,
+          observacoes
         });
 
         if (!data.sucesso) {
@@ -2010,7 +2174,14 @@
 
         cadNome.value = "";
         cadSenha.value = "";
+        cadNascimento.value = "";
+        cadSexo.value = "";
+        cadCategoria.value = "";
         cadFaixa.value = "";
+        cadPeso.value = "";
+        cadTelefone.value = "";
+        cadEmail.value = "";
+        cadObservacoes.value = "";
 
         await carregarListaAlunos();
 
@@ -2063,9 +2234,16 @@
       const filtrados = !termo
         ? alunosCache
         : alunosCache.filter(aluno => {
-            const nome = String(aluno.nome || "").toLowerCase();
-            const id = String(aluno.id || "").toLowerCase();
-            return nome.includes(termo) || id.includes(termo);
+            const texto = [
+              aluno.id,
+              aluno.nome,
+              aluno.categoria,
+              aluno.faixaAtual,
+              aluno.telefone,
+              aluno.email
+            ].join(" ").toLowerCase();
+
+            return texto.includes(termo);
           });
 
       renderTabelaAlunos(filtrados);
@@ -2075,20 +2253,26 @@
       if (!alunos.length) {
         alunosTableBody.innerHTML = `
           <tr>
-            <td colspan="10">Nenhum aluno encontrado.</td>
+            <td colspan="16">Nenhum aluno encontrado.</td>
           </tr>
         `;
         return;
       }
 
-      alunosTableBody.innerHTML = alunos.map(aluno => `
+      alunosTableBody.innerHTML = alunos.map((aluno, index) => `
         <tr>
           <td>
             <img class="aluno-thumb" src="${escapeHtml(aluno.fotoUrl || PLACEHOLDER_FOTO)}" alt="Foto" />
           </td>
           <td>${escapeHtml(aluno.id ?? "")}</td>
           <td>${escapeHtml(aluno.nome ?? "")}</td>
+          <td>${escapeHtml(formatBirth(aluno.nascimento || ""))}</td>
+          <td>${escapeHtml(aluno.sexo ?? "-")}</td>
+          <td>${escapeHtml(aluno.categoria ?? "-")}</td>
           <td>${escapeHtml(aluno.faixaAtual ?? "-")}</td>
+          <td>${escapeHtml(aluno.peso ?? "-")}</td>
+          <td>${escapeHtml(aluno.telefone ?? "-")}</td>
+          <td>${escapeHtml(aluno.email ?? "-")}</td>
           <td>${Number(aluno.totalAulas || 0)}</td>
           <td>${escapeHtml(aluno.proximaFaixa ?? "-")}</td>
           <td>${Number(aluno.aulasParaProxima || 0)}</td>
@@ -2100,12 +2284,12 @@
           <td>${escapeHtml(aluno.qrCode ?? "-")}</td>
           <td>
             <div class="actions-cell">
-              <button class="btn btn-blue btn-mini" onclick='handleEdit(${JSON.stringify(aluno).replace(/'/g, "&apos;")})'>Editar</button>
-              <button class="btn btn-secondary btn-mini" onclick='handleLoadCard(${JSON.stringify(aluno).replace(/'/g, "&apos;")})'>Carteirinha</button>
+              <button class="btn btn-blue btn-mini action-edit" data-index="${index}">Editar</button>
+              <button class="btn btn-secondary btn-mini action-card" data-index="${index}">Carteirinha</button>
               ${
                 String(aluno.status || "").toLowerCase() === "ativo"
-                ? `<button class="btn btn-red btn-mini" onclick="handleToggleStatus('${escapeHtml(aluno.id)}','Inativo')">Inativar</button>`
-                : `<button class="btn btn-success btn-mini" onclick="handleToggleStatus('${escapeHtml(aluno.id)}','Ativo')">Ativar</button>`
+                ? `<button class="btn btn-red btn-mini action-status" data-id="${escapeHtml(aluno.id)}" data-status="Inativo">Inativar</button>`
+                : `<button class="btn btn-success btn-mini action-status" data-id="${escapeHtml(aluno.id)}" data-status="Ativo">Ativar</button>`
               }
             </div>
           </td>
@@ -2113,16 +2297,33 @@
       `).join("");
     }
 
-    window.handleEdit = function(aluno) {
-      openEditModal(aluno);
-    };
+    alunosTableBody.addEventListener("click", async (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
 
-    window.handleLoadCard = function(aluno) {
-      preencherCarteirinha("admin", aluno);
-      showMessage(adminQrMsg, `Carteirinha carregada para ${aluno.nome || "aluno"}.`, "info");
-    };
+      if (btn.classList.contains("action-edit")) {
+        const aluno = alunosCache[Number(btn.dataset.index)];
+        if (aluno) openEditModal(aluno);
+        return;
+      }
 
-    window.handleToggleStatus = async function(id, status) {
+      if (btn.classList.contains("action-card")) {
+        const aluno = alunosCache[Number(btn.dataset.index)];
+        if (aluno) {
+          preencherCarteirinha("admin", aluno);
+          showMessage(adminQrMsg, `Carteirinha carregada para ${aluno.nome || "aluno"}.`, "info");
+        }
+        return;
+      }
+
+      if (btn.classList.contains("action-status")) {
+        const id = btn.dataset.id;
+        const status = btn.dataset.status;
+        await handleToggleStatus(id, status);
+      }
+    });
+
+    async function handleToggleStatus(id, status) {
       clearMessage(listaMsg);
 
       try {
@@ -2144,7 +2345,7 @@
       } catch (error) {
         showMessage(listaMsg, "Erro ao atualizar o status do aluno.", "error");
       }
-    };
+    }
 
     async function salvarEdicao() {
       clearMessage(editMsg);
@@ -2152,7 +2353,14 @@
       const id = editId.value.trim();
       const nome = editNome.value.trim();
       const senha = editSenha.value.trim();
+      const nascimento = editNascimento.value.trim();
+      const sexo = editSexo.value.trim();
+      const categoria = editCategoria.value.trim();
       const faixaAtual = editFaixa.value.trim();
+      const peso = editPeso.value.trim();
+      const telefone = editTelefone.value.trim();
+      const email = editEmail.value.trim();
+      const observacoes = editObservacoes.value.trim();
 
       if (!id || !nome || !faixaAtual) {
         showMessage(editMsg, "Preencha ID, nome e faixa.", "warning");
@@ -2166,7 +2374,14 @@
           action: "editarAluno",
           id,
           nome,
-          faixaAtual
+          nascimento,
+          sexo,
+          categoria,
+          faixaAtual,
+          peso,
+          telefone,
+          email,
+          observacoes
         };
 
         if (senha) payload.senha = senha;
@@ -2327,6 +2542,11 @@
 
       if (!["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file.type)) {
         showMessage(fotoAlunoMsg, "Formato inválido. Use JPG, PNG ou WEBP.", "error");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        showMessage(fotoAlunoMsg, "A foto deve ter no máximo 5 MB.", "warning");
         return;
       }
 
