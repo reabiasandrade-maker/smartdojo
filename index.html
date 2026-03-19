@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart Dojo PRO v2</title>
+  <title>Smart Dojo PRO v5</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
 
   <style>
     :root{
@@ -46,7 +49,7 @@
     }
 
     .app{
-      max-width:1280px;
+      max-width:1360px;
       margin:0 auto;
     }
 
@@ -185,7 +188,7 @@
 
     .input, .select{
       width:100%;
-      height:52px;
+      min-height:52px;
       border-radius:16px;
       border:1px solid var(--line);
       padding:0 16px;
@@ -194,22 +197,37 @@
       transition:.2s ease;
       background:#fff;
       color:var(--text);
+      font-family:inherit;
     }
 
-    .input:focus, .select:focus{
+    .file-input{
+      width:100%;
+      min-height:52px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      padding:12px 16px;
+      font-size:15px;
+      outline:none;
+      background:#fff;
+      color:var(--text);
+      font-family:inherit;
+    }
+
+    .input:focus, .select:focus, .file-input:focus{
       border-color:#94a3b8;
       box-shadow:0 0 0 4px rgba(148,163,184,.14);
     }
 
     .btn{
       border:none;
-      height:52px;
+      min-height:52px;
       border-radius:16px;
-      padding:0 18px;
+      padding:12px 18px;
       font-weight:800;
       font-size:15px;
       cursor:pointer;
       transition:.2s ease;
+      font-family:inherit;
     }
 
     .btn:hover{
@@ -242,11 +260,6 @@
 
     .btn-red{
       background:var(--red);
-      color:#fff;
-    }
-
-    .btn-yellow{
-      background:var(--yellow);
       color:#fff;
     }
 
@@ -357,7 +370,7 @@
     table{
       width:100%;
       border-collapse:collapse;
-      min-width:980px;
+      min-width:1160px;
     }
 
     th, td{
@@ -434,8 +447,8 @@
     }
 
     .btn-mini{
-      height:38px;
-      padding:0 12px;
+      min-height:38px;
+      padding:8px 12px;
       border-radius:12px;
       font-size:13px;
       font-weight:800;
@@ -470,7 +483,7 @@
 
     .modal{
       width:100%;
-      max-width:620px;
+      max-width:700px;
       background:#fff;
       border-radius:24px;
       box-shadow:0 20px 60px rgba(15,23,42,.25);
@@ -493,6 +506,243 @@
       margin-top:8px;
     }
 
+    .qr-box{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:220px;
+      border:1px dashed #cbd5e1;
+      border-radius:20px;
+      background:#fff;
+      padding:16px;
+    }
+
+    .qr-code-text{
+      margin-top:12px;
+      font-size:13px;
+      word-break:break-all;
+      color:#334155;
+      text-align:center;
+      font-weight:600;
+    }
+
+    .history-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-height:340px;
+      overflow:auto;
+    }
+
+    .history-item{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+      background:#fff;
+    }
+
+    .history-main{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      font-weight:700;
+    }
+
+    .history-sub{
+      margin-top:6px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    #reader{
+      width:100%;
+      border-radius:18px;
+      overflow:hidden;
+      background:#fff;
+    }
+
+    .qr-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .card-id-wrapper{
+      margin-top:18px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .dojo-card{
+      width:100%;
+      max-width:560px;
+      min-height:320px;
+      border-radius:26px;
+      overflow:hidden;
+      background:linear-gradient(135deg,#0f172a 0%, #1e293b 55%, #334155 100%);
+      color:#fff;
+      box-shadow:0 20px 60px rgba(15,23,42,.22);
+      position:relative;
+    }
+
+    .dojo-card::before{
+      content:"";
+      position:absolute;
+      inset:auto -40px -40px auto;
+      width:180px;
+      height:180px;
+      background:rgba(255,255,255,.06);
+      border-radius:50%;
+    }
+
+    .dojo-card::after{
+      content:"";
+      position:absolute;
+      inset:20px auto auto -35px;
+      width:120px;
+      height:120px;
+      background:rgba(255,255,255,.05);
+      border-radius:50%;
+    }
+
+    .dojo-card-inner{
+      position:relative;
+      z-index:2;
+      padding:24px;
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:20px;
+      min-height:320px;
+    }
+
+    .dojo-card-brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .dojo-card-logo{
+      width:46px;
+      height:46px;
+      border-radius:14px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:18px;
+    }
+
+    .dojo-card-brand-text h3{
+      font-size:18px;
+      font-weight:800;
+      margin:0;
+    }
+
+    .dojo-card-brand-text p{
+      font-size:12px;
+      color:rgba(255,255,255,.75);
+      margin:2px 0 0;
+    }
+
+    .dojo-card-profile{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .dojo-card-photo{
+      width:88px;
+      height:88px;
+      object-fit:cover;
+      border-radius:18px;
+      border:2px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.08);
+      flex-shrink:0;
+    }
+
+    .dojo-card-name{
+      font-size:28px;
+      line-height:1.1;
+      font-weight:800;
+      letter-spacing:-.03em;
+      margin-bottom:0;
+      max-width:260px;
+    }
+
+    .dojo-card-meta{
+      display:grid;
+      gap:10px;
+    }
+
+    .dojo-card-row{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .dojo-card-row span{
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:rgba(255,255,255,.68);
+      font-weight:700;
+    }
+
+    .dojo-card-row strong{
+      font-size:16px;
+      font-weight:800;
+    }
+
+    .dojo-card-qr-side{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+    }
+
+    .dojo-card-qr{
+      width:170px;
+      height:170px;
+      background:#fff;
+      border-radius:18px;
+      padding:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .dojo-card-qr-text{
+      text-align:center;
+      font-size:10px;
+      line-height:1.4;
+      color:rgba(255,255,255,.78);
+      word-break:break-all;
+    }
+
+    .print-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:16px;
+    }
+
+    .aluno-thumb{
+      width:44px;
+      height:44px;
+      border-radius:12px;
+      object-fit:cover;
+      background:#e5e7eb;
+      border:1px solid #dbe3ee;
+    }
+
     @keyframes spin{
       to{ transform:rotate(360deg); }
     }
@@ -500,6 +750,15 @@
     @media (max-width: 1080px){
       .grid-2, .grid-3, .grid-4, .stats{
         grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media (max-width: 840px){
+      .dojo-card-inner{
+        grid-template-columns:1fr;
+      }
+      .dojo-card{
+        max-width:100%;
       }
     }
 
@@ -529,6 +788,14 @@
       .actions-cell{
         min-width:220px;
       }
+      .dojo-card-name{
+        font-size:24px;
+        max-width:100%;
+      }
+      .dojo-card-qr{
+        width:150px;
+        height:150px;
+      }
     }
   </style>
 </head>
@@ -539,8 +806,8 @@
       <div class="brand">
         <div class="brand-logo">柔</div>
         <div>
-          <h1>Smart Dojo PRO v2</h1>
-          <p>Presença, progressão de faixa e gestão de alunos</p>
+          <h1>Smart Dojo PRO v5</h1>
+          <p>Presença, QR Code, histórico, foto, gestão e carteirinha</p>
         </div>
       </div>
 
@@ -550,13 +817,12 @@
       </div>
     </div>
 
-    <!-- ÁREA DO ALUNO -->
     <section id="alunoPage" class="page active">
       <div id="alunoLoginCard" class="card">
         <div class="card-header">
           <div class="card-title">Login do aluno</div>
           <div class="card-subtitle">
-            Entre com seu ID e sua senha para acompanhar sua graduação e registrar sua presença.
+            Entre com seu ID e sua senha para acompanhar sua graduação, histórico, foto, QR Code e carteirinha.
           </div>
         </div>
         <div class="card-body">
@@ -610,32 +876,138 @@
         </div>
 
         <div class="card-body">
-          <div class="panel">
-            <div class="section-title">Registrar presença</div>
-            <p class="small-note" style="margin-bottom:14px;">
-              O aluno pode registrar apenas uma presença por dia.
-            </p>
-            <button id="marcarPresencaBtn" class="btn btn-success btn-full">Marcar presença</button>
-            <div id="presencaMsg" class="message"></div>
+          <div class="grid-2">
+            <div class="panel">
+              <div class="section-title">Registrar presença</div>
+              <p class="small-note" style="margin-bottom:14px;">
+                O aluno pode registrar apenas uma presença por dia.
+              </p>
+              <button id="marcarPresencaBtn" class="btn btn-success btn-full">Marcar presença</button>
+              <div id="presencaMsg" class="message"></div>
+
+              <div class="section">
+                <div class="grid-2">
+                  <button id="atualizarAlunoBtn" class="btn btn-secondary btn-full">Atualizar meus dados</button>
+                  <button id="sairAlunoBtn" class="btn btn-secondary btn-full">Sair</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="section-title">Meu QR Code</div>
+              <div id="alunoQrBox" class="qr-box"></div>
+              <div id="alunoQrText" class="qr-code-text">-</div>
+            </div>
           </div>
 
           <div class="section">
             <div class="grid-2">
-              <button id="atualizarAlunoBtn" class="btn btn-secondary btn-full">Atualizar meus dados</button>
-              <button id="sairAlunoBtn" class="btn btn-secondary btn-full">Sair</button>
+              <div class="panel">
+                <div class="section-title">Foto do aluno</div>
+                <input id="fotoAlunoInput" type="file" accept="image/png,image/jpeg,image/webp" class="file-input" />
+                <button id="enviarFotoAlunoBtn" class="btn btn-primary btn-full" style="margin-top:12px;">Enviar foto</button>
+                <div id="fotoAlunoMsg" class="message"></div>
+              </div>
+
+              <div class="panel">
+                <div class="section-title">Prévia da foto</div>
+                <div class="qr-box" style="min-height:200px;">
+                  <img id="previewAlunoFoto" src="" alt="Foto do aluno" style="max-width:100%; max-height:180px; border-radius:18px; object-fit:cover; display:none;" />
+                  <div id="previewAlunoFotoEmpty" class="small-note">Nenhuma foto enviada.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="panel">
+              <div class="top-info">
+                <div>
+                  <div class="section-title">Carteirinha do aluno</div>
+                  <div class="small-note">Pronta para imprimir ou salvar em PDF.</div>
+                </div>
+              </div>
+
+              <div class="card-id-wrapper">
+                <div id="printCardArea">
+                  <div class="dojo-card">
+                    <div class="dojo-card-inner">
+                      <div>
+                        <div class="dojo-card-brand">
+                          <div class="dojo-card-logo">柔</div>
+                          <div class="dojo-card-brand-text">
+                            <h3>Smart Dojo</h3>
+                            <p>Carteirinha do aluno</p>
+                          </div>
+                        </div>
+
+                        <div class="dojo-card-profile">
+                          <img id="cardAlunoFoto" class="dojo-card-photo" src="" alt="Foto do aluno" />
+                          <div id="cardAlunoNome" class="dojo-card-name">Nome do aluno</div>
+                        </div>
+
+                        <div class="dojo-card-meta">
+                          <div class="dojo-card-row">
+                            <span>ID do aluno</span>
+                            <strong id="cardAlunoId">-</strong>
+                          </div>
+                          <div class="dojo-card-row">
+                            <span>Faixa atual</span>
+                            <strong id="cardAlunoFaixa">-</strong>
+                          </div>
+                          <div class="dojo-card-row">
+                            <span>Status</span>
+                            <strong id="cardAlunoStatus">-</strong>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="dojo-card-qr-side">
+                        <div id="cardAlunoQr" class="dojo-card-qr"></div>
+                        <div id="cardAlunoQrText" class="dojo-card-qr-text">-</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="print-actions">
+                <button id="imprimirCarteirinhaAlunoBtn" class="btn btn-blue">Imprimir / Salvar PDF</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="panel">
+              <div class="top-info">
+                <div>
+                  <div class="section-title">Histórico de presenças</div>
+                  <div class="small-note">Últimos registros do aluno.</div>
+                </div>
+                <button id="atualizarHistoricoBtn" class="btn btn-blue">Atualizar histórico</button>
+              </div>
+
+              <div id="historicoAlunoList" class="history-list">
+                <div class="history-item">
+                  <div class="history-main">
+                    <span>Nenhum histórico carregado.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div id="historicoMsg" class="message"></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ÁREA DO PROFESSOR -->
     <section id="adminPage" class="page">
       <div id="adminLoginCard" class="card">
         <div class="card-header">
           <div class="card-title">Acesso do professor</div>
           <div class="card-subtitle">
-            Entre com a senha administrativa para cadastrar e gerenciar os alunos da academia.
+            Entre com a senha administrativa para cadastrar, editar, marcar presença por QR e gerar carteirinhas.
           </div>
         </div>
         <div class="card-body">
@@ -656,7 +1028,7 @@
               <div>
                 <div class="card-title">Painel do professor</div>
                 <div class="card-subtitle">
-                  Cadastre, edite, ative e inative alunos.
+                  Cadastre, edite, ative, inative, registre presença com QR Code e gere carteirinhas.
                 </div>
               </div>
               <button id="adminLogoutBtn" class="btn btn-secondary">Sair</button>
@@ -734,11 +1106,98 @@
             </div>
 
             <div class="section">
+              <div class="grid-2">
+                <div class="panel">
+                  <div class="section-title">Presença por QR Code</div>
+
+                  <div class="form-group">
+                    <label class="label" for="qrInputManual">Código QR manual</label>
+                    <input id="qrInputManual" class="input" type="text" placeholder="Cole ou digite o código QR do aluno" />
+                  </div>
+
+                  <div class="qr-actions">
+                    <button id="marcarPresencaQrBtn" class="btn btn-success">Marcar por QR</button>
+                    <button id="iniciarCameraBtn" class="btn btn-blue">Ler pela câmera</button>
+                    <button id="pararCameraBtn" class="btn btn-secondary">Parar câmera</button>
+                  </div>
+
+                  <div class="section">
+                    <div id="reader"></div>
+                  </div>
+
+                  <div id="qrMsg" class="message"></div>
+                </div>
+
+                <div class="panel">
+                  <div class="section-title">Carteirinha do aluno</div>
+
+                  <div class="form-group">
+                    <label class="label" for="qrAlunoIdBusca">ID do aluno</label>
+                    <input id="qrAlunoIdBusca" class="input" type="text" placeholder="Digite o ID do aluno" />
+                  </div>
+
+                  <button id="buscarQrAlunoBtn" class="btn btn-primary btn-full">Carregar carteirinha</button>
+
+                  <div class="section">
+                    <div class="card-id-wrapper">
+                      <div id="adminPrintCardArea">
+                        <div class="dojo-card">
+                          <div class="dojo-card-inner">
+                            <div>
+                              <div class="dojo-card-brand">
+                                <div class="dojo-card-logo">柔</div>
+                                <div class="dojo-card-brand-text">
+                                  <h3>Smart Dojo</h3>
+                                  <p>Carteirinha do aluno</p>
+                                </div>
+                              </div>
+
+                              <div class="dojo-card-profile">
+                                <img id="adminCardAlunoFoto" class="dojo-card-photo" src="" alt="Foto do aluno" />
+                                <div id="adminCardAlunoNome" class="dojo-card-name">Nome do aluno</div>
+                              </div>
+
+                              <div class="dojo-card-meta">
+                                <div class="dojo-card-row">
+                                  <span>ID do aluno</span>
+                                  <strong id="adminCardAlunoId">-</strong>
+                                </div>
+                                <div class="dojo-card-row">
+                                  <span>Faixa atual</span>
+                                  <strong id="adminCardAlunoFaixa">-</strong>
+                                </div>
+                                <div class="dojo-card-row">
+                                  <span>Status</span>
+                                  <strong id="adminCardAlunoStatus">-</strong>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="dojo-card-qr-side">
+                              <div id="adminCardAlunoQr" class="dojo-card-qr"></div>
+                              <div id="adminCardAlunoQrText" class="dojo-card-qr-text">-</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="print-actions">
+                      <button id="imprimirCarteirinhaAdminBtn" class="btn btn-blue">Imprimir / Salvar PDF</button>
+                    </div>
+                  </div>
+
+                  <div id="adminQrMsg" class="message"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section">
               <div class="panel">
                 <div class="top-info">
                   <div>
                     <div class="section-title">Lista de alunos</div>
-                    <div class="small-note">Você pode buscar, editar, ativar e inativar alunos.</div>
+                    <div class="small-note">Você pode buscar, editar, ativar, inativar, visualizar QR Code e gerar carteirinha.</div>
                   </div>
                 </div>
 
@@ -754,6 +1213,7 @@
                   <table>
                     <thead>
                       <tr>
+                        <th>Foto</th>
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Faixa Atual</th>
@@ -761,12 +1221,13 @@
                         <th>Próxima Faixa</th>
                         <th>Faltam</th>
                         <th>Status</th>
+                        <th>QR Code</th>
                         <th>Ações</th>
                       </tr>
                     </thead>
                     <tbody id="alunosTableBody">
                       <tr>
-                        <td colspan="8">Nenhum dado carregado.</td>
+                        <td colspan="10">Nenhum dado carregado.</td>
                       </tr>
                     </tbody>
                   </table>
@@ -781,7 +1242,6 @@
     </section>
   </div>
 
-  <!-- MODAL EDIÇÃO -->
   <div id="editModalBackdrop" class="modal-backdrop">
     <div class="modal">
       <div class="modal-header">
@@ -827,8 +1287,9 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzOLg8xDkwbLORzJApwyiGZr64hEPzq_9INo4I766qoWWMnLjmEqlGnI-6ufhV2CO2p/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbw7HuphkwSJezxyslplNtyQm1iMLCaMA7hot9NEWXCqP5q7pPKUCYyd7Jka5hPAaUil/exec";
     const ADMIN_PASSWORD = "judopro2026";
+    const PLACEHOLDER_FOTO = "https://via.placeholder.com/120x120?text=Foto";
 
     const showAlunoBtn = document.getElementById("showAlunoBtn");
     const showAdminBtn = document.getElementById("showAdminBtn");
@@ -855,6 +1316,27 @@
     const sairAlunoBtn = document.getElementById("sairAlunoBtn");
     const presencaMsg = document.getElementById("presencaMsg");
 
+    const atualizarHistoricoBtn = document.getElementById("atualizarHistoricoBtn");
+    const historicoAlunoList = document.getElementById("historicoAlunoList");
+    const historicoMsg = document.getElementById("historicoMsg");
+    const alunoQrBox = document.getElementById("alunoQrBox");
+    const alunoQrText = document.getElementById("alunoQrText");
+
+    const fotoAlunoInput = document.getElementById("fotoAlunoInput");
+    const enviarFotoAlunoBtn = document.getElementById("enviarFotoAlunoBtn");
+    const fotoAlunoMsg = document.getElementById("fotoAlunoMsg");
+    const previewAlunoFoto = document.getElementById("previewAlunoFoto");
+    const previewAlunoFotoEmpty = document.getElementById("previewAlunoFotoEmpty");
+
+    const cardAlunoNome = document.getElementById("cardAlunoNome");
+    const cardAlunoId = document.getElementById("cardAlunoId");
+    const cardAlunoFaixa = document.getElementById("cardAlunoFaixa");
+    const cardAlunoStatus = document.getElementById("cardAlunoStatus");
+    const cardAlunoQr = document.getElementById("cardAlunoQr");
+    const cardAlunoQrText = document.getElementById("cardAlunoQrText");
+    const cardAlunoFoto = document.getElementById("cardAlunoFoto");
+    const imprimirCarteirinhaAlunoBtn = document.getElementById("imprimirCarteirinhaAlunoBtn");
+
     const adminLoginCard = document.getElementById("adminLoginCard");
     const adminDashboardCard = document.getElementById("adminDashboardCard");
     const adminSenha = document.getElementById("adminSenha");
@@ -878,6 +1360,25 @@
     const searchAlunoInput = document.getElementById("searchAlunoInput");
     const limparBuscaBtn = document.getElementById("limparBuscaBtn");
 
+    const qrInputManual = document.getElementById("qrInputManual");
+    const marcarPresencaQrBtn = document.getElementById("marcarPresencaQrBtn");
+    const iniciarCameraBtn = document.getElementById("iniciarCameraBtn");
+    const pararCameraBtn = document.getElementById("pararCameraBtn");
+    const qrMsg = document.getElementById("qrMsg");
+
+    const qrAlunoIdBusca = document.getElementById("qrAlunoIdBusca");
+    const buscarQrAlunoBtn = document.getElementById("buscarQrAlunoBtn");
+    const adminQrMsg = document.getElementById("adminQrMsg");
+
+    const adminCardAlunoNome = document.getElementById("adminCardAlunoNome");
+    const adminCardAlunoId = document.getElementById("adminCardAlunoId");
+    const adminCardAlunoFaixa = document.getElementById("adminCardAlunoFaixa");
+    const adminCardAlunoStatus = document.getElementById("adminCardAlunoStatus");
+    const adminCardAlunoQr = document.getElementById("adminCardAlunoQr");
+    const adminCardAlunoQrText = document.getElementById("adminCardAlunoQrText");
+    const adminCardAlunoFoto = document.getElementById("adminCardAlunoFoto");
+    const imprimirCarteirinhaAdminBtn = document.getElementById("imprimirCarteirinhaAdminBtn");
+
     const editModalBackdrop = document.getElementById("editModalBackdrop");
     const editId = document.getElementById("editId");
     const editNome = document.getElementById("editNome");
@@ -890,6 +1391,8 @@
     let alunoLogado = null;
     let adminLogado = false;
     let alunosCache = [];
+    let qrScanner = null;
+    let qrCameraRunning = false;
 
     function showPage(page) {
       alunoPage.classList.remove("active");
@@ -967,6 +1470,237 @@
         .replaceAll("'", "&#039;");
     }
 
+    function clearQrBox(el) {
+      el.innerHTML = "";
+    }
+
+    function renderQrCode(el, text, size = 180) {
+      clearQrBox(el);
+      if (!text) {
+        el.innerHTML = "<div class='small-note'>QR Code não disponível.</div>";
+        return;
+      }
+      new QRCode(el, {
+        text,
+        width: size,
+        height: size
+      });
+    }
+
+    function setFotoPreview(url) {
+      if (url) {
+        previewAlunoFoto.src = url;
+        previewAlunoFoto.style.display = "block";
+        previewAlunoFotoEmpty.style.display = "none";
+      } else {
+        previewAlunoFoto.src = "";
+        previewAlunoFoto.style.display = "none";
+        previewAlunoFotoEmpty.style.display = "block";
+      }
+    }
+
+    function preencherCarteirinha(prefix, aluno) {
+      const map = {
+        aluno: {
+          nome: cardAlunoNome,
+          id: cardAlunoId,
+          faixa: cardAlunoFaixa,
+          status: cardAlunoStatus,
+          qr: cardAlunoQr,
+          qrText: cardAlunoQrText,
+          foto: cardAlunoFoto
+        },
+        admin: {
+          nome: adminCardAlunoNome,
+          id: adminCardAlunoId,
+          faixa: adminCardAlunoFaixa,
+          status: adminCardAlunoStatus,
+          qr: adminCardAlunoQr,
+          qrText: adminCardAlunoQrText,
+          foto: adminCardAlunoFoto
+        }
+      };
+
+      const target = map[prefix];
+      if (!target) return;
+
+      target.nome.textContent = aluno?.nome || "Nome do aluno";
+      target.id.textContent = aluno?.id || "-";
+      target.faixa.textContent = aluno?.faixaAtual || "-";
+      target.status.textContent = aluno?.status || "-";
+      renderQrCode(target.qr, aluno?.qrCode || "", 140);
+      target.qrText.textContent = aluno?.qrCode || "-";
+      target.foto.src = aluno?.fotoUrl || PLACEHOLDER_FOTO;
+    }
+
+    function imprimirElemento(elementId) {
+      const source = document.getElementById(elementId);
+      if (!source) return;
+
+      const win = window.open("", "_blank", "width=900,height=700");
+      const html = `
+        <html>
+        <head>
+          <title>Carteirinha Smart Dojo</title>
+          <style>
+            body{
+              margin:0;
+              padding:30px;
+              font-family:Inter, Arial, sans-serif;
+              background:#ffffff;
+              display:flex;
+              justify-content:center;
+              align-items:flex-start;
+            }
+            .dojo-card{
+              width:560px;
+              min-height:320px;
+              border-radius:26px;
+              overflow:hidden;
+              background:linear-gradient(135deg,#0f172a 0%, #1e293b 55%, #334155 100%);
+              color:#fff;
+              position:relative;
+            }
+            .dojo-card::before{
+              content:"";
+              position:absolute;
+              inset:auto -40px -40px auto;
+              width:180px;
+              height:180px;
+              background:rgba(255,255,255,.06);
+              border-radius:50%;
+            }
+            .dojo-card::after{
+              content:"";
+              position:absolute;
+              inset:20px auto auto -35px;
+              width:120px;
+              height:120px;
+              background:rgba(255,255,255,.05);
+              border-radius:50%;
+            }
+            .dojo-card-inner{
+              position:relative;
+              z-index:2;
+              padding:24px;
+              display:grid;
+              grid-template-columns:1.2fr .8fr;
+              gap:20px;
+              min-height:320px;
+            }
+            .dojo-card-brand{
+              display:flex;
+              align-items:center;
+              gap:12px;
+              margin-bottom:18px;
+            }
+            .dojo-card-logo{
+              width:46px;
+              height:46px;
+              border-radius:14px;
+              background:rgba(255,255,255,.14);
+              border:1px solid rgba(255,255,255,.18);
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              font-weight:800;
+              font-size:18px;
+            }
+            .dojo-card-brand-text h3{
+              font-size:18px;
+              font-weight:800;
+              margin:0;
+            }
+            .dojo-card-brand-text p{
+              font-size:12px;
+              color:rgba(255,255,255,.75);
+              margin:2px 0 0;
+            }
+            .dojo-card-profile{
+              display:flex;
+              gap:16px;
+              align-items:center;
+              flex-wrap:wrap;
+              margin-bottom:18px;
+            }
+            .dojo-card-photo{
+              width:88px;
+              height:88px;
+              object-fit:cover;
+              border-radius:18px;
+              border:2px solid rgba(255,255,255,.18);
+              background:rgba(255,255,255,.08);
+              flex-shrink:0;
+            }
+            .dojo-card-name{
+              font-size:28px;
+              line-height:1.1;
+              font-weight:800;
+              letter-spacing:-.03em;
+              margin-bottom:0;
+              max-width:260px;
+            }
+            .dojo-card-meta{
+              display:grid;
+              gap:10px;
+            }
+            .dojo-card-row{
+              display:flex;
+              flex-direction:column;
+              gap:4px;
+            }
+            .dojo-card-row span{
+              font-size:11px;
+              text-transform:uppercase;
+              letter-spacing:.08em;
+              color:rgba(255,255,255,.68);
+              font-weight:700;
+            }
+            .dojo-card-row strong{
+              font-size:16px;
+              font-weight:800;
+            }
+            .dojo-card-qr-side{
+              display:flex;
+              flex-direction:column;
+              align-items:center;
+              justify-content:center;
+              gap:12px;
+            }
+            .dojo-card-qr{
+              width:170px;
+              height:170px;
+              background:#fff;
+              border-radius:18px;
+              padding:10px;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+            }
+            .dojo-card-qr-text{
+              text-align:center;
+              font-size:10px;
+              line-height:1.4;
+              color:rgba(255,255,255,.78);
+              word-break:break-all;
+            }
+          </style>
+        </head>
+        <body>
+          ${source.innerHTML}
+          <script>
+            window.onload = () => {
+              setTimeout(() => window.print(), 250);
+            };
+          <\/script>
+        </body>
+        </html>
+      `;
+      win.document.open();
+      win.document.write(html);
+      win.document.close();
+    }
+
     function openEditModal(aluno) {
       editId.value = aluno.id || "";
       editNome.value = aluno.nome || "";
@@ -990,6 +1724,11 @@
       proximaFaixa.textContent = aluno.proximaFaixa || "-";
       aulasParaProxima.textContent = Number(aluno.aulasParaProxima || 0);
 
+      renderQrCode(alunoQrBox, aluno.qrCode || "");
+      alunoQrText.textContent = aluno.qrCode || "-";
+      preencherCarteirinha("aluno", aluno);
+      setFotoPreview(aluno.fotoUrl || "");
+
       alunoLoginCard.classList.add("hidden");
       alunoDashboardCard.classList.remove("hidden");
 
@@ -1005,8 +1744,20 @@
       alunoDashboardCard.classList.add("hidden");
       alunoId.value = "";
       alunoSenha.value = "";
+      fotoAlunoInput.value = "";
       clearMessage(alunoLoginMsg);
       clearMessage(presencaMsg);
+      clearMessage(historicoMsg);
+      clearMessage(fotoAlunoMsg);
+      historicoAlunoList.innerHTML = `
+        <div class="history-item">
+          <div class="history-main"><span>Nenhum histórico carregado.</span></div>
+        </div>
+      `;
+      clearQrBox(alunoQrBox);
+      alunoQrText.textContent = "-";
+      preencherCarteirinha("aluno", null);
+      setFotoPreview("");
     }
 
     async function loginAluno() {
@@ -1030,9 +1781,10 @@
 
         showMessage(alunoLoginMsg, data.mensagem || "Login realizado com sucesso.", "success");
 
-        setTimeout(() => {
+        setTimeout(async () => {
           abrirDashboardAluno(data.aluno);
           alunoSenha.value = "";
+          await carregarHistoricoAluno();
         }, 250);
 
       } catch (error) {
@@ -1056,6 +1808,7 @@
 
         abrirDashboardAluno(data.aluno);
         showMessage(presencaMsg, "Dados atualizados com sucesso.", "info");
+        await carregarHistoricoAluno();
 
       } catch (error) {
         showMessage(presencaMsg, "Erro ao atualizar os dados.", "error");
@@ -1092,6 +1845,7 @@
         alunoLogado.proximaFaixa = data.proximaFaixa || alunoLogado.proximaFaixa;
         alunoLogado.aulasParaProxima = Number(data.aulasParaProxima || 0);
         localStorage.setItem("smartDojoAluno", JSON.stringify(alunoLogado));
+        preencherCarteirinha("aluno", alunoLogado);
 
         showMessage(
           presencaMsg,
@@ -1099,11 +1853,60 @@
           "success"
         );
 
+        await carregarHistoricoAluno();
+
       } catch (error) {
         showMessage(presencaMsg, "Erro ao conectar com o sistema.", "error");
       } finally {
         setButtonLoading(marcarPresencaBtn, false, "Marcar presença");
       }
+    }
+
+    async function carregarHistoricoAluno() {
+      if (!alunoLogado || !alunoLogado.id) return;
+
+      clearMessage(historicoMsg);
+
+      try {
+        setButtonLoading(atualizarHistoricoBtn, true, "Atualizar histórico", "Buscando...");
+        const data = await apiGet({ action: "historicoAluno", id: alunoLogado.id });
+
+        if (!data.sucesso) {
+          showMessage(historicoMsg, data.mensagem || "Não foi possível carregar o histórico.", "error");
+          return;
+        }
+
+        renderHistoricoAluno(data.historico || []);
+        showMessage(historicoMsg, "Histórico atualizado com sucesso.", "info");
+
+      } catch (error) {
+        showMessage(historicoMsg, "Erro ao carregar histórico.", "error");
+      } finally {
+        setButtonLoading(atualizarHistoricoBtn, false, "Atualizar histórico");
+      }
+    }
+
+    function renderHistoricoAluno(historico) {
+      if (!historico.length) {
+        historicoAlunoList.innerHTML = `
+          <div class="history-item">
+            <div class="history-main"><span>Nenhum registro de presença encontrado.</span></div>
+          </div>
+        `;
+        return;
+      }
+
+      historicoAlunoList.innerHTML = historico.map(item => `
+        <div class="history-item">
+          <div class="history-main">
+            <span>${escapeHtml(item.data || "-")}</span>
+            <span>${escapeHtml(item.hora || "-")}</span>
+          </div>
+          <div class="history-sub">
+            Status: <strong>${escapeHtml(item.status || "-")}</strong>
+          </div>
+        </div>
+      `).join("");
     }
 
     function carregarSessaoAluno() {
@@ -1129,7 +1932,7 @@
       carregarListaAlunos();
     }
 
-    function sairAdmin() {
+    async function sairAdmin() {
       adminLogado = false;
       localStorage.removeItem("smartDojoAdminLogado");
       adminLoginCard.classList.remove("hidden");
@@ -1138,6 +1941,12 @@
       clearMessage(adminLoginMsg);
       clearMessage(cadastroMsg);
       clearMessage(listaMsg);
+      clearMessage(qrMsg);
+      clearMessage(adminQrMsg);
+      qrInputManual.value = "";
+      qrAlunoIdBusca.value = "";
+      preencherCarteirinha("admin", null);
+      await stopQrScanner();
     }
 
     function carregarSessaoAdmin() {
@@ -1266,7 +2075,7 @@
       if (!alunos.length) {
         alunosTableBody.innerHTML = `
           <tr>
-            <td colspan="8">Nenhum aluno encontrado.</td>
+            <td colspan="10">Nenhum aluno encontrado.</td>
           </tr>
         `;
         return;
@@ -1274,6 +2083,9 @@
 
       alunosTableBody.innerHTML = alunos.map(aluno => `
         <tr>
+          <td>
+            <img class="aluno-thumb" src="${escapeHtml(aluno.fotoUrl || PLACEHOLDER_FOTO)}" alt="Foto" />
+          </td>
           <td>${escapeHtml(aluno.id ?? "")}</td>
           <td>${escapeHtml(aluno.nome ?? "")}</td>
           <td>${escapeHtml(aluno.faixaAtual ?? "-")}</td>
@@ -1285,9 +2097,11 @@
               ${escapeHtml(aluno.status ?? "-")}
             </span>
           </td>
+          <td>${escapeHtml(aluno.qrCode ?? "-")}</td>
           <td>
             <div class="actions-cell">
               <button class="btn btn-blue btn-mini" onclick='handleEdit(${JSON.stringify(aluno).replace(/'/g, "&apos;")})'>Editar</button>
+              <button class="btn btn-secondary btn-mini" onclick='handleLoadCard(${JSON.stringify(aluno).replace(/'/g, "&apos;")})'>Carteirinha</button>
               ${
                 String(aluno.status || "").toLowerCase() === "ativo"
                 ? `<button class="btn btn-red btn-mini" onclick="handleToggleStatus('${escapeHtml(aluno.id)}','Inativo')">Inativar</button>`
@@ -1301,6 +2115,11 @@
 
     window.handleEdit = function(aluno) {
       openEditModal(aluno);
+    };
+
+    window.handleLoadCard = function(aluno) {
+      preencherCarteirinha("admin", aluno);
+      showMessage(adminQrMsg, `Carteirinha carregada para ${aluno.nome || "aluno"}.`, "info");
     };
 
     window.handleToggleStatus = async function(id, status) {
@@ -1360,7 +2179,6 @@
         }
 
         showMessage(editMsg, data.mensagem || "Aluno atualizado com sucesso.", "success");
-
         await carregarListaAlunos();
 
         setTimeout(() => {
@@ -1374,6 +2192,191 @@
       }
     }
 
+    async function buscarCarteirinhaAlunoPorId() {
+      clearMessage(adminQrMsg);
+      const id = qrAlunoIdBusca.value.trim();
+
+      if (!id) {
+        showMessage(adminQrMsg, "Digite o ID do aluno.", "warning");
+        return;
+      }
+
+      try {
+        setButtonLoading(buscarQrAlunoBtn, true, "Carregar carteirinha", "Buscando...");
+        const data = await apiGet({ action: "listarAluno", id });
+
+        if (!data.sucesso || !data.aluno) {
+          showMessage(adminQrMsg, data.mensagem || "Aluno não encontrado.", "error");
+          return;
+        }
+
+        preencherCarteirinha("admin", data.aluno);
+        showMessage(adminQrMsg, `Carteirinha carregada para ${data.aluno.nome}.`, "success");
+
+      } catch (error) {
+        showMessage(adminQrMsg, "Erro ao buscar carteirinha do aluno.", "error");
+      } finally {
+        setButtonLoading(buscarQrAlunoBtn, false, "Carregar carteirinha");
+      }
+    }
+
+    async function marcarPresencaPorQrCodeManual(codigo) {
+      clearMessage(qrMsg);
+
+      const qrCode = String(codigo || "").trim();
+      if (!qrCode) {
+        showMessage(qrMsg, "Informe um QR Code válido.", "warning");
+        return;
+      }
+
+      try {
+        setButtonLoading(marcarPresencaQrBtn, true, "Marcar por QR", "Registrando...");
+
+        const data = await apiPost({
+          action: "marcarPresencaQr",
+          qrCode
+        });
+
+        if (!data.sucesso) {
+          const tipo = (data.mensagem || "").toLowerCase().includes("já registrada") ? "warning" : "error";
+          showMessage(qrMsg, data.mensagem || "Não foi possível marcar a presença.", tipo);
+          return;
+        }
+
+        showMessage(qrMsg, `${data.nome}: ${data.mensagem}`, "success");
+        qrInputManual.value = "";
+        await carregarListaAlunos();
+
+      } catch (error) {
+        showMessage(qrMsg, "Erro ao registrar presença por QR.", "error");
+      } finally {
+        setButtonLoading(marcarPresencaQrBtn, false, "Marcar por QR");
+      }
+    }
+
+    async function startQrScanner() {
+      clearMessage(qrMsg);
+
+      try {
+        if (qrCameraRunning) {
+          showMessage(qrMsg, "Leitor já está ativo.", "info");
+          return;
+        }
+
+        qrScanner = new Html5Qrcode("reader");
+
+        await qrScanner.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: 220 },
+          async (decodedText) => {
+            qrInputManual.value = decodedText;
+            showMessage(qrMsg, "QR Code lido com sucesso.", "success");
+            await stopQrScanner();
+            await marcarPresencaPorQrCodeManual(decodedText);
+          },
+          () => {}
+        );
+
+        qrCameraRunning = true;
+        showMessage(qrMsg, "Câmera iniciada. Aponte para o QR Code.", "info");
+
+      } catch (error) {
+        qrCameraRunning = false;
+        showMessage(qrMsg, "Não foi possível iniciar a câmera neste dispositivo/navegador.", "error");
+      }
+    }
+
+    async function stopQrScanner() {
+      try {
+        if (qrScanner && qrCameraRunning) {
+          await qrScanner.stop();
+          await qrScanner.clear();
+        }
+      } catch (e) {
+      } finally {
+        qrCameraRunning = false;
+      }
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result || "";
+          const base64 = String(result).split(",")[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function enviarFotoAluno() {
+      clearMessage(fotoAlunoMsg);
+
+      if (!alunoLogado || !alunoLogado.id) {
+        showMessage(fotoAlunoMsg, "Faça login novamente.", "error");
+        return;
+      }
+
+      const file = fotoAlunoInput.files?.[0];
+      if (!file) {
+        showMessage(fotoAlunoMsg, "Selecione uma foto primeiro.", "warning");
+        return;
+      }
+
+      if (!["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(file.type)) {
+        showMessage(fotoAlunoMsg, "Formato inválido. Use JPG, PNG ou WEBP.", "error");
+        return;
+      }
+
+      try {
+        setButtonLoading(enviarFotoAlunoBtn, true, "Enviar foto", "Enviando...");
+
+        const base64 = await fileToBase64(file);
+
+        const data = await apiPost({
+          action: "uploadFotoAluno",
+          id: alunoLogado.id,
+          fileName: file.name,
+          mimeType: file.type,
+          base64: base64
+        });
+
+        if (!data.sucesso) {
+          showMessage(fotoAlunoMsg, data.mensagem || "Não foi possível enviar a foto.", "error");
+          return;
+        }
+
+        alunoLogado.fotoUrl = data.fotoUrl;
+        localStorage.setItem("smartDojoAluno", JSON.stringify(alunoLogado));
+        preencherCarteirinha("aluno", alunoLogado);
+        setFotoPreview(data.fotoUrl);
+
+        showMessage(fotoAlunoMsg, "Foto enviada com sucesso.", "success");
+        await atualizarDadosAluno();
+
+      } catch (error) {
+        showMessage(fotoAlunoMsg, "Erro ao enviar foto.", "error");
+      } finally {
+        setButtonLoading(enviarFotoAlunoBtn, false, "Enviar foto");
+      }
+    }
+
+    fotoAlunoInput.addEventListener("change", () => {
+      const file = fotoAlunoInput.files?.[0];
+      if (!file) {
+        setFotoPreview(alunoLogado?.fotoUrl || "");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        setFotoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    });
+
     showAlunoBtn.addEventListener("click", () => showPage("aluno"));
     showAdminBtn.addEventListener("click", () => showPage("admin"));
 
@@ -1381,6 +2384,9 @@
     marcarPresencaBtn.addEventListener("click", marcarPresenca);
     atualizarAlunoBtn.addEventListener("click", atualizarDadosAluno);
     sairAlunoBtn.addEventListener("click", sairAluno);
+    atualizarHistoricoBtn.addEventListener("click", carregarHistoricoAluno);
+    imprimirCarteirinhaAlunoBtn.addEventListener("click", () => imprimirElemento("printCardArea"));
+    enviarFotoAlunoBtn.addEventListener("click", enviarFotoAluno);
 
     alunoId.addEventListener("keypress", e => {
       if (e.key === "Enter") alunoSenha.focus();
@@ -1411,6 +2417,15 @@
       if (e.target === editModalBackdrop) closeEditModal();
     });
 
+    buscarQrAlunoBtn.addEventListener("click", buscarCarteirinhaAlunoPorId);
+    marcarPresencaQrBtn.addEventListener("click", () => marcarPresencaPorQrCodeManual(qrInputManual.value));
+    iniciarCameraBtn.addEventListener("click", startQrScanner);
+    pararCameraBtn.addEventListener("click", stopQrScanner);
+    imprimirCarteirinhaAdminBtn.addEventListener("click", () => imprimirElemento("adminPrintCardArea"));
+
+    preencherCarteirinha("aluno", null);
+    preencherCarteirinha("admin", null);
+    setFotoPreview("");
     carregarSessaoAluno();
     carregarSessaoAdmin();
   </script>
