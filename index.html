@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Dojo PRO v2</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --line:#e6ebf2;
+      --text:#0f172a;
+      --muted:#64748b;
+      --primary:#111827;
+      --secondary:#eef2f7;
+      --green:#16a34a;
+      --green-soft:#dcfce7;
+      --red:#dc2626;
+      --red-soft:#fee2e2;
+      --yellow:#d97706;
+      --yellow-soft:#fef3c7;
+      --blue:#2563eb;
+      --blue-soft:#dbeafe;
+      --shadow:0 12px 30px rgba(15,23,42,.08);
+      --radius:22px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, #ffffff 0%, #eef4fb 40%, #f4f7fb 100%);
+      min-height:100vh;
+      padding:18px;
+    }
+
+    .app{
+      max-width:1280px;
+      margin:0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:22px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .brand-logo{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#111827,#374151);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:21px;
+      box-shadow:var(--shadow);
+    }
+
+    .brand h1{
+      font-size:28px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .brand p{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:4px;
+    }
+
+    .view-switch{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .switch-btn{
+      border:none;
+      background:#fff;
+      color:#111827;
+      padding:12px 18px;
+      border-radius:14px;
+      font-weight:700;
+      cursor:pointer;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      transition:.2s ease;
+    }
+
+    .switch-btn.active{
+      background:#111827;
+      color:#fff;
+      border-color:#111827;
+    }
+
+    .page{
+      display:none;
+    }
+
+    .page.active{
+      display:block;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .card-header{
+      padding:24px 24px 10px;
+    }
+
+    .card-title{
+      font-size:24px;
+      font-weight:800;
+      letter-spacing:-.03em;
+    }
+
+    .card-subtitle{
+      color:var(--muted);
+      font-size:14px;
+      margin-top:8px;
+      line-height:1.6;
+    }
+
+    .card-body{
+      padding:24px;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .grid-4{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
+
+    .form-group{
+      margin-bottom:16px;
+    }
+
+    .label{
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      color:#334155;
+      margin-bottom:8px;
+    }
+
+    .input, .select{
+      width:100%;
+      height:52px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      padding:0 16px;
+      font-size:15px;
+      outline:none;
+      transition:.2s ease;
+      background:#fff;
+      color:var(--text);
+    }
+
+    .input:focus, .select:focus{
+      border-color:#94a3b8;
+      box-shadow:0 0 0 4px rgba(148,163,184,.14);
+    }
+
+    .btn{
+      border:none;
+      height:52px;
+      border-radius:16px;
+      padding:0 18px;
+      font-weight:800;
+      font-size:15px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-full{
+      width:100%;
+    }
+
+    .btn-primary{
+      background:#111827;
+      color:#fff;
+    }
+
+    .btn-success{
+      background:var(--green);
+      color:#fff;
+    }
+
+    .btn-secondary{
+      background:var(--secondary);
+      color:#111827;
+    }
+
+    .btn-blue{
+      background:var(--blue);
+      color:#fff;
+    }
+
+    .btn-red{
+      background:var(--red);
+      color:#fff;
+    }
+
+    .btn-yellow{
+      background:var(--yellow);
+      color:#fff;
+    }
+
+    .message{
+      display:none;
+      margin-top:14px;
+      padding:14px 16px;
+      border-radius:16px;
+      font-size:14px;
+      line-height:1.5;
+      font-weight:600;
+    }
+
+    .message.show{
+      display:block;
+    }
+
+    .message.success{
+      background:var(--green-soft);
+      color:#166534;
+      border:1px solid #bbf7d0;
+    }
+
+    .message.error{
+      background:var(--red-soft);
+      color:#991b1b;
+      border:1px solid #fecaca;
+    }
+
+    .message.warning{
+      background:var(--yellow-soft);
+      color:#92400e;
+      border:1px solid #fde68a;
+    }
+
+    .message.info{
+      background:var(--blue-soft);
+      color:#1d4ed8;
+      border:1px solid #bfdbfe;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+
+    .stat{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+    }
+
+    .stat-label{
+      font-size:12px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      font-weight:700;
+      margin-bottom:10px;
+    }
+
+    .stat-value{
+      font-size:26px;
+      font-weight:800;
+      letter-spacing:-.03em;
+      line-height:1.1;
+    }
+
+    .stat-sub{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .section{
+      margin-top:20px;
+    }
+
+    .section-title{
+      font-size:18px;
+      font-weight:800;
+      margin-bottom:12px;
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:#fcfdff;
+      padding:20px;
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
+    .table-wrap{
+      width:100%;
+      overflow:auto;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:980px;
+    }
+
+    th, td{
+      padding:14px 14px;
+      text-align:left;
+      border-bottom:1px solid #edf2f7;
+      font-size:14px;
+      vertical-align:middle;
+    }
+
+    th{
+      background:#f8fafc;
+      color:#334155;
+      font-weight:800;
+      position:sticky;
+      top:0;
+      z-index:1;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:90px;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .badge.green{
+      background:var(--green-soft);
+      color:#166534;
+    }
+
+    .badge.red{
+      background:var(--red-soft);
+      color:#991b1b;
+    }
+
+    .top-info{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .small-note{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .toolbar{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:end;
+      margin-bottom:16px;
+    }
+
+    .toolbar .form-group{
+      margin-bottom:0;
+      min-width:220px;
+      flex:1;
+    }
+
+    .actions-cell{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .btn-mini{
+      height:38px;
+      padding:0 12px;
+      border-radius:12px;
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .loader{
+      width:18px;
+      height:18px;
+      border:2px solid rgba(255,255,255,.35);
+      border-top-color:#fff;
+      border-radius:50%;
+      display:inline-block;
+      vertical-align:middle;
+      margin-right:8px;
+      animation:spin .8s linear infinite;
+    }
+
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.45);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:999;
+    }
+
+    .modal-backdrop.show{
+      display:flex;
+    }
+
+    .modal{
+      width:100%;
+      max-width:620px;
+      background:#fff;
+      border-radius:24px;
+      box-shadow:0 20px 60px rgba(15,23,42,.25);
+      border:1px solid var(--line);
+      overflow:hidden;
+    }
+
+    .modal-header{
+      padding:22px 22px 10px;
+    }
+
+    .modal-body{
+      padding:22px;
+    }
+
+    .modal-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    @keyframes spin{
+      to{ transform:rotate(360deg); }
+    }
+
+    @media (max-width: 1080px){
+      .grid-2, .grid-3, .grid-4, .stats{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media (max-width: 720px){
+      body{
+        padding:14px;
+      }
+      .grid-2, .grid-3, .grid-4, .stats{
+        grid-template-columns:1fr;
+      }
+      .card-header, .card-body, .modal-header, .modal-body{
+        padding:18px;
+      }
+      .card-title{
+        font-size:21px;
+      }
+      .brand h1{
+        font-size:22px;
+      }
+      .toolbar{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .toolbar .form-group{
+        min-width:unset;
+      }
+      .actions-cell{
+        min-width:220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-logo">柔</div>
+        <div>
+          <h1>Smart Dojo PRO v2</h1>
+          <p>Presença, progressão de faixa e gestão de alunos</p>
+        </div>
+      </div>
+
+      <div class="view-switch">
+        <button id="showAlunoBtn" class="switch-btn active">Área do Aluno</button>
+        <button id="showAdminBtn" class="switch-btn">Área do Professor</button>
+      </div>
+    </div>
+
+    <!-- ÁREA DO ALUNO -->
+    <section id="alunoPage" class="page active">
+      <div id="alunoLoginCard" class="card">
+        <div class="card-header">
+          <div class="card-title">Login do aluno</div>
+          <div class="card-subtitle">
+            Entre com seu ID e sua senha para acompanhar sua graduação e registrar sua presença.
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="label" for="alunoId">ID do aluno</label>
+              <input id="alunoId" class="input" type="text" placeholder="Digite seu ID" />
+            </div>
+
+            <div class="form-group">
+              <label class="label" for="alunoSenha">Senha</label>
+              <input id="alunoSenha" class="input" type="password" placeholder="Digite sua senha" />
+            </div>
+          </div>
+
+          <button id="alunoLoginBtn" class="btn btn-primary btn-full">Entrar</button>
+          <div id="alunoLoginMsg" class="message"></div>
+        </div>
+      </div>
+
+      <div id="alunoDashboardCard" class="card hidden">
+        <div class="card-header">
+          <div class="card-title" id="studentName">Aluno</div>
+          <div class="card-subtitle" id="studentMeta">ID: -</div>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">Faixa atual</div>
+              <div class="stat-value" id="faixaAtual">-</div>
+              <div class="stat-sub">Graduação atual</div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Total de aulas</div>
+              <div class="stat-value" id="totalAulas">0</div>
+              <div class="stat-sub">Presenças registradas</div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Próxima faixa</div>
+              <div class="stat-value" id="proximaFaixa">-</div>
+              <div class="stat-sub">Meta atual</div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Faltam</div>
+              <div class="stat-value" id="aulasParaProxima">0</div>
+              <div class="stat-sub">Aulas para progredir</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="panel">
+            <div class="section-title">Registrar presença</div>
+            <p class="small-note" style="margin-bottom:14px;">
+              O aluno pode registrar apenas uma presença por dia.
+            </p>
+            <button id="marcarPresencaBtn" class="btn btn-success btn-full">Marcar presença</button>
+            <div id="presencaMsg" class="message"></div>
+          </div>
+
+          <div class="section">
+            <div class="grid-2">
+              <button id="atualizarAlunoBtn" class="btn btn-secondary btn-full">Atualizar meus dados</button>
+              <button id="sairAlunoBtn" class="btn btn-secondary btn-full">Sair</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ÁREA DO PROFESSOR -->
+    <section id="adminPage" class="page">
+      <div id="adminLoginCard" class="card">
+        <div class="card-header">
+          <div class="card-title">Acesso do professor</div>
+          <div class="card-subtitle">
+            Entre com a senha administrativa para cadastrar e gerenciar os alunos da academia.
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="label" for="adminSenha">Senha do professor</label>
+            <input id="adminSenha" class="input" type="password" placeholder="Digite a senha administrativa" />
+          </div>
+
+          <button id="adminLoginBtn" class="btn btn-primary btn-full">Entrar na área administrativa</button>
+          <div id="adminLoginMsg" class="message"></div>
+        </div>
+      </div>
+
+      <div id="adminDashboardCard" class="hidden">
+        <div class="card">
+          <div class="card-header">
+            <div class="top-info">
+              <div>
+                <div class="card-title">Painel do professor</div>
+                <div class="card-subtitle">
+                  Cadastre, edite, ative e inative alunos.
+                </div>
+              </div>
+              <button id="adminLogoutBtn" class="btn btn-secondary">Sair</button>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="grid-2">
+              <div class="panel">
+                <div class="section-title">Cadastrar aluno</div>
+
+                <div class="form-group">
+                  <label class="label" for="cadNome">Nome do aluno</label>
+                  <input id="cadNome" class="input" type="text" placeholder="Ex.: João Silva" />
+                </div>
+
+                <div class="form-group">
+                  <label class="label" for="cadSenha">Senha do aluno</label>
+                  <input id="cadSenha" class="input" type="text" placeholder="Ex.: 1234" />
+                </div>
+
+                <div class="form-group">
+                  <label class="label" for="cadFaixa">Faixa atual</label>
+                  <select id="cadFaixa" class="select">
+                    <option value="">Selecione</option>
+                    <option value="Branca">Branca</option>
+                    <option value="Cinza">Cinza</option>
+                    <option value="Azul">Azul</option>
+                    <option value="Amarela">Amarela</option>
+                    <option value="Laranja">Laranja</option>
+                    <option value="Verde">Verde</option>
+                    <option value="Roxa">Roxa</option>
+                    <option value="Marrom">Marrom</option>
+                    <option value="Preta">Preta</option>
+                  </select>
+                </div>
+
+                <button id="cadastrarAlunoBtn" class="btn btn-success btn-full">Cadastrar aluno</button>
+                <div id="cadastroMsg" class="message"></div>
+              </div>
+
+              <div class="panel">
+                <div class="section-title">Resumo rápido</div>
+
+                <div class="stats" style="margin-top:0;">
+                  <div class="stat">
+                    <div class="stat-label">Total de alunos</div>
+                    <div id="totalAlunosAdmin" class="stat-value">0</div>
+                    <div class="stat-sub">Base cadastrada</div>
+                  </div>
+
+                  <div class="stat">
+                    <div class="stat-label">Ativos</div>
+                    <div id="ativosAdmin" class="stat-value">0</div>
+                    <div class="stat-sub">Alunos ativos</div>
+                  </div>
+
+                  <div class="stat">
+                    <div class="stat-label">Inativos</div>
+                    <div id="inativosAdmin" class="stat-value">0</div>
+                    <div class="stat-sub">Alunos inativos</div>
+                  </div>
+
+                  <div class="stat">
+                    <div class="stat-label">Última carga</div>
+                    <div id="ultimaCargaAdmin" class="stat-value">-</div>
+                    <div class="stat-sub">Lista sincronizada</div>
+                  </div>
+                </div>
+
+                <div class="section">
+                  <button id="recarregarListaBtn" class="btn btn-blue btn-full">Atualizar lista de alunos</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="panel">
+                <div class="top-info">
+                  <div>
+                    <div class="section-title">Lista de alunos</div>
+                    <div class="small-note">Você pode buscar, editar, ativar e inativar alunos.</div>
+                  </div>
+                </div>
+
+                <div class="toolbar">
+                  <div class="form-group">
+                    <label class="label" for="searchAlunoInput">Buscar aluno</label>
+                    <input id="searchAlunoInput" class="input" type="text" placeholder="Digite o nome ou ID do aluno" />
+                  </div>
+                  <button id="limparBuscaBtn" class="btn btn-secondary">Limpar busca</button>
+                </div>
+
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Faixa Atual</th>
+                        <th>Total Aulas</th>
+                        <th>Próxima Faixa</th>
+                        <th>Faltam</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody id="alunosTableBody">
+                      <tr>
+                        <td colspan="8">Nenhum dado carregado.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div id="listaMsg" class="message"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODAL EDIÇÃO -->
+  <div id="editModalBackdrop" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="card-title">Editar aluno</div>
+        <div class="card-subtitle">Atualize nome, senha e faixa atual do aluno.</div>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editId" />
+
+        <div class="form-group">
+          <label class="label" for="editNome">Nome</label>
+          <input id="editNome" class="input" type="text" />
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="editSenha">Senha</label>
+          <input id="editSenha" class="input" type="text" />
+        </div>
+
+        <div class="form-group">
+          <label class="label" for="editFaixa">Faixa atual</label>
+          <select id="editFaixa" class="select">
+            <option value="Branca">Branca</option>
+            <option value="Cinza">Cinza</option>
+            <option value="Azul">Azul</option>
+            <option value="Amarela">Amarela</option>
+            <option value="Laranja">Laranja</option>
+            <option value="Verde">Verde</option>
+            <option value="Roxa">Roxa</option>
+            <option value="Marrom">Marrom</option>
+            <option value="Preta">Preta</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button id="salvarEdicaoBtn" class="btn btn-success">Salvar alterações</button>
+          <button id="fecharModalBtn" class="btn btn-secondary">Cancelar</button>
+        </div>
+
+        <div id="editMsg" class="message"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbzOLg8xDkwbLORzJApwyiGZr64hEPzq_9INo4I766qoWWMnLjmEqlGnI-6ufhV2CO2p/exec";
+    const ADMIN_PASSWORD = "judopro2026";
+
+    const showAlunoBtn = document.getElementById("showAlunoBtn");
+    const showAdminBtn = document.getElementById("showAdminBtn");
+    const alunoPage = document.getElementById("alunoPage");
+    const adminPage = document.getElementById("adminPage");
+
+    const alunoLoginCard = document.getElementById("alunoLoginCard");
+    const alunoDashboardCard = document.getElementById("alunoDashboardCard");
+
+    const alunoId = document.getElementById("alunoId");
+    const alunoSenha = document.getElementById("alunoSenha");
+    const alunoLoginBtn = document.getElementById("alunoLoginBtn");
+    const alunoLoginMsg = document.getElementById("alunoLoginMsg");
+
+    const studentName = document.getElementById("studentName");
+    const studentMeta = document.getElementById("studentMeta");
+    const faixaAtual = document.getElementById("faixaAtual");
+    const totalAulas = document.getElementById("totalAulas");
+    const proximaFaixa = document.getElementById("proximaFaixa");
+    const aulasParaProxima = document.getElementById("aulasParaProxima");
+
+    const marcarPresencaBtn = document.getElementById("marcarPresencaBtn");
+    const atualizarAlunoBtn = document.getElementById("atualizarAlunoBtn");
+    const sairAlunoBtn = document.getElementById("sairAlunoBtn");
+    const presencaMsg = document.getElementById("presencaMsg");
+
+    const adminLoginCard = document.getElementById("adminLoginCard");
+    const adminDashboardCard = document.getElementById("adminDashboardCard");
+    const adminSenha = document.getElementById("adminSenha");
+    const adminLoginBtn = document.getElementById("adminLoginBtn");
+    const adminLoginMsg = document.getElementById("adminLoginMsg");
+    const adminLogoutBtn = document.getElementById("adminLogoutBtn");
+
+    const cadNome = document.getElementById("cadNome");
+    const cadSenha = document.getElementById("cadSenha");
+    const cadFaixa = document.getElementById("cadFaixa");
+    const cadastrarAlunoBtn = document.getElementById("cadastrarAlunoBtn");
+    const cadastroMsg = document.getElementById("cadastroMsg");
+
+    const totalAlunosAdmin = document.getElementById("totalAlunosAdmin");
+    const ativosAdmin = document.getElementById("ativosAdmin");
+    const inativosAdmin = document.getElementById("inativosAdmin");
+    const ultimaCargaAdmin = document.getElementById("ultimaCargaAdmin");
+    const recarregarListaBtn = document.getElementById("recarregarListaBtn");
+    const alunosTableBody = document.getElementById("alunosTableBody");
+    const listaMsg = document.getElementById("listaMsg");
+    const searchAlunoInput = document.getElementById("searchAlunoInput");
+    const limparBuscaBtn = document.getElementById("limparBuscaBtn");
+
+    const editModalBackdrop = document.getElementById("editModalBackdrop");
+    const editId = document.getElementById("editId");
+    const editNome = document.getElementById("editNome");
+    const editSenha = document.getElementById("editSenha");
+    const editFaixa = document.getElementById("editFaixa");
+    const salvarEdicaoBtn = document.getElementById("salvarEdicaoBtn");
+    const fecharModalBtn = document.getElementById("fecharModalBtn");
+    const editMsg = document.getElementById("editMsg");
+
+    let alunoLogado = null;
+    let adminLogado = false;
+    let alunosCache = [];
+
+    function showPage(page) {
+      alunoPage.classList.remove("active");
+      adminPage.classList.remove("active");
+      showAlunoBtn.classList.remove("active");
+      showAdminBtn.classList.remove("active");
+
+      if (page === "aluno") {
+        alunoPage.classList.add("active");
+        showAlunoBtn.classList.add("active");
+      } else {
+        adminPage.classList.add("active");
+        showAdminBtn.classList.add("active");
+      }
+    }
+
+    function showMessage(el, text, type = "success") {
+      el.className = `message show ${type}`;
+      el.textContent = text;
+    }
+
+    function clearMessage(el) {
+      el.className = "message";
+      el.textContent = "";
+    }
+
+    function setButtonLoading(button, loading, textNormal, textLoading = "Carregando...") {
+      if (loading) {
+        button.disabled = true;
+        button.innerHTML = `<span class="loader"></span>${textLoading}`;
+        button.style.opacity = "0.85";
+        button.style.cursor = "not-allowed";
+      } else {
+        button.disabled = false;
+        button.textContent = textNormal;
+        button.style.opacity = "1";
+        button.style.cursor = "pointer";
+      }
+    }
+
+    function nowLabel() {
+      return new Date().toLocaleString("pt-BR");
+    }
+
+    async function apiGet(params) {
+      const url = new URL(API_URL);
+      Object.keys(params).forEach(key => {
+        if (params[key] !== undefined && params[key] !== null) {
+          url.searchParams.append(key, params[key]);
+        }
+      });
+
+      const response = await fetch(url, { method: "GET" });
+      if (!response.ok) throw new Error("Erro de conexão com o servidor.");
+      return await response.json();
+    }
+
+    async function apiPost(payload) {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error("Erro de conexão com o servidor.");
+      return await response.json();
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function openEditModal(aluno) {
+      editId.value = aluno.id || "";
+      editNome.value = aluno.nome || "";
+      editSenha.value = "";
+      editFaixa.value = aluno.faixaAtual || "Branca";
+      clearMessage(editMsg);
+      editModalBackdrop.classList.add("show");
+    }
+
+    function closeEditModal() {
+      editModalBackdrop.classList.remove("show");
+      clearMessage(editMsg);
+    }
+
+    function abrirDashboardAluno(aluno) {
+      alunoLogado = aluno;
+      studentName.textContent = aluno.nome || "-";
+      studentMeta.textContent = `ID: ${aluno.id || "-"} • Status: ${aluno.status || "Ativo"}`;
+      faixaAtual.textContent = aluno.faixaAtual || "-";
+      totalAulas.textContent = Number(aluno.totalAulas || 0);
+      proximaFaixa.textContent = aluno.proximaFaixa || "-";
+      aulasParaProxima.textContent = Number(aluno.aulasParaProxima || 0);
+
+      alunoLoginCard.classList.add("hidden");
+      alunoDashboardCard.classList.remove("hidden");
+
+      localStorage.setItem("smartDojoAluno", JSON.stringify(aluno));
+      clearMessage(presencaMsg);
+      clearMessage(alunoLoginMsg);
+    }
+
+    function sairAluno() {
+      alunoLogado = null;
+      localStorage.removeItem("smartDojoAluno");
+      alunoLoginCard.classList.remove("hidden");
+      alunoDashboardCard.classList.add("hidden");
+      alunoId.value = "";
+      alunoSenha.value = "";
+      clearMessage(alunoLoginMsg);
+      clearMessage(presencaMsg);
+    }
+
+    async function loginAluno() {
+      clearMessage(alunoLoginMsg);
+      const id = alunoId.value.trim();
+      const senha = alunoSenha.value.trim();
+
+      if (!id || !senha) {
+        showMessage(alunoLoginMsg, "Preencha o ID e a senha.", "warning");
+        return;
+      }
+
+      try {
+        setButtonLoading(alunoLoginBtn, true, "Entrar", "Entrando...");
+        const data = await apiGet({ action: "login", id, senha });
+
+        if (!data.sucesso) {
+          showMessage(alunoLoginMsg, data.mensagem || "Falha no login.", "error");
+          return;
+        }
+
+        showMessage(alunoLoginMsg, data.mensagem || "Login realizado com sucesso.", "success");
+
+        setTimeout(() => {
+          abrirDashboardAluno(data.aluno);
+          alunoSenha.value = "";
+        }, 250);
+
+      } catch (error) {
+        showMessage(alunoLoginMsg, "Erro ao conectar com o Apps Script.", "error");
+      } finally {
+        setButtonLoading(alunoLoginBtn, false, "Entrar");
+      }
+    }
+
+    async function atualizarDadosAluno() {
+      if (!alunoLogado || !alunoLogado.id) return;
+
+      try {
+        setButtonLoading(atualizarAlunoBtn, true, "Atualizar meus dados", "Atualizando...");
+        const data = await apiGet({ action: "listarAluno", id: alunoLogado.id });
+
+        if (!data.sucesso || !data.aluno) {
+          showMessage(presencaMsg, data.mensagem || "Não foi possível atualizar.", "error");
+          return;
+        }
+
+        abrirDashboardAluno(data.aluno);
+        showMessage(presencaMsg, "Dados atualizados com sucesso.", "info");
+
+      } catch (error) {
+        showMessage(presencaMsg, "Erro ao atualizar os dados.", "error");
+      } finally {
+        setButtonLoading(atualizarAlunoBtn, false, "Atualizar meus dados");
+      }
+    }
+
+    async function marcarPresenca() {
+      if (!alunoLogado || !alunoLogado.id) {
+        showMessage(presencaMsg, "Faça login novamente.", "error");
+        return;
+      }
+
+      clearMessage(presencaMsg);
+
+      try {
+        setButtonLoading(marcarPresencaBtn, true, "Marcar presença", "Registrando...");
+        const data = await apiGet({ action: "marcarPresenca", id: alunoLogado.id });
+
+        if (!data.sucesso) {
+          const tipo = (data.mensagem || "").toLowerCase().includes("já registrada") ? "warning" : "error";
+          showMessage(presencaMsg, data.mensagem || "Não foi possível registrar presença.", tipo);
+          return;
+        }
+
+        totalAulas.textContent = Number(data.totalAulas || 0);
+        faixaAtual.textContent = data.faixaAtual || "-";
+        proximaFaixa.textContent = data.proximaFaixa || "-";
+        aulasParaProxima.textContent = Number(data.aulasParaProxima || 0);
+
+        alunoLogado.totalAulas = Number(data.totalAulas || 0);
+        alunoLogado.faixaAtual = data.faixaAtual || alunoLogado.faixaAtual;
+        alunoLogado.proximaFaixa = data.proximaFaixa || alunoLogado.proximaFaixa;
+        alunoLogado.aulasParaProxima = Number(data.aulasParaProxima || 0);
+        localStorage.setItem("smartDojoAluno", JSON.stringify(alunoLogado));
+
+        showMessage(
+          presencaMsg,
+          `${data.mensagem} Agora você tem ${data.totalAulas} aulas registradas.`,
+          "success"
+        );
+
+      } catch (error) {
+        showMessage(presencaMsg, "Erro ao conectar com o sistema.", "error");
+      } finally {
+        setButtonLoading(marcarPresencaBtn, false, "Marcar presença");
+      }
+    }
+
+    function carregarSessaoAluno() {
+      const salvo = localStorage.getItem("smartDojoAluno");
+      if (!salvo) return;
+      try {
+        const aluno = JSON.parse(salvo);
+        if (aluno && aluno.id) {
+          abrirDashboardAluno(aluno);
+          atualizarDadosAluno();
+        }
+      } catch (e) {
+        localStorage.removeItem("smartDojoAluno");
+      }
+    }
+
+    function abrirAdmin() {
+      adminLogado = true;
+      localStorage.setItem("smartDojoAdminLogado", "1");
+      adminLoginCard.classList.add("hidden");
+      adminDashboardCard.classList.remove("hidden");
+      clearMessage(adminLoginMsg);
+      carregarListaAlunos();
+    }
+
+    function sairAdmin() {
+      adminLogado = false;
+      localStorage.removeItem("smartDojoAdminLogado");
+      adminLoginCard.classList.remove("hidden");
+      adminDashboardCard.classList.add("hidden");
+      adminSenha.value = "";
+      clearMessage(adminLoginMsg);
+      clearMessage(cadastroMsg);
+      clearMessage(listaMsg);
+    }
+
+    function carregarSessaoAdmin() {
+      const salvo = localStorage.getItem("smartDojoAdminLogado");
+      if (salvo === "1") abrirAdmin();
+    }
+
+    function loginAdmin() {
+      clearMessage(adminLoginMsg);
+      const senha = adminSenha.value.trim();
+
+      if (!senha) {
+        showMessage(adminLoginMsg, "Digite a senha administrativa.", "warning");
+        return;
+      }
+
+      if (senha !== ADMIN_PASSWORD) {
+        showMessage(adminLoginMsg, "Senha administrativa inválida.", "error");
+        return;
+      }
+
+      showMessage(adminLoginMsg, "Login administrativo realizado com sucesso.", "success");
+      setTimeout(() => {
+        abrirAdmin();
+        adminSenha.value = "";
+      }, 250);
+    }
+
+    async function cadastrarAluno() {
+      clearMessage(cadastroMsg);
+
+      const nome = cadNome.value.trim();
+      const senha = cadSenha.value.trim();
+      const faixaAtual = cadFaixa.value.trim();
+
+      if (!nome || !senha || !faixaAtual) {
+        showMessage(cadastroMsg, "Preencha nome, senha e faixa atual.", "warning");
+        return;
+      }
+
+      try {
+        setButtonLoading(cadastrarAlunoBtn, true, "Cadastrar aluno", "Salvando...");
+
+        const data = await apiPost({
+          action: "cadastrarAluno",
+          nome,
+          senha,
+          faixaAtual
+        });
+
+        if (!data.sucesso) {
+          showMessage(cadastroMsg, data.mensagem || "Não foi possível cadastrar o aluno.", "error");
+          return;
+        }
+
+        showMessage(
+          cadastroMsg,
+          `Aluno cadastrado com sucesso. ID gerado: ${data.aluno?.id ?? "-"}.`,
+          "success"
+        );
+
+        cadNome.value = "";
+        cadSenha.value = "";
+        cadFaixa.value = "";
+
+        await carregarListaAlunos();
+
+      } catch (error) {
+        showMessage(cadastroMsg, "Erro ao salvar no Apps Script.", "error");
+      } finally {
+        setButtonLoading(cadastrarAlunoBtn, false, "Cadastrar aluno");
+      }
+    }
+
+    async function carregarListaAlunos() {
+      clearMessage(listaMsg);
+
+      try {
+        setButtonLoading(recarregarListaBtn, true, "Atualizar lista de alunos", "Atualizando...");
+        const data = await apiGet({ action: "listarAlunos" });
+
+        if (!data.sucesso) {
+          showMessage(listaMsg, data.mensagem || "Não foi possível carregar a lista.", "error");
+          return;
+        }
+
+        alunosCache = Array.isArray(data.alunos) ? data.alunos : [];
+        renderTabelaFiltrada();
+        atualizarResumoAdmin(alunosCache);
+        ultimaCargaAdmin.textContent = nowLabel();
+
+        showMessage(listaMsg, "Lista atualizada com sucesso.", "info");
+
+      } catch (error) {
+        showMessage(listaMsg, "Erro ao buscar a lista de alunos.", "error");
+      } finally {
+        setButtonLoading(recarregarListaBtn, false, "Atualizar lista de alunos");
+      }
+    }
+
+    function atualizarResumoAdmin(alunos) {
+      const total = alunos.length;
+      const ativos = alunos.filter(a => (a.status || "").toLowerCase() === "ativo").length;
+      const inativos = alunos.filter(a => (a.status || "").toLowerCase() !== "ativo").length;
+
+      totalAlunosAdmin.textContent = total;
+      ativosAdmin.textContent = ativos;
+      inativosAdmin.textContent = inativos;
+    }
+
+    function renderTabelaFiltrada() {
+      const termo = searchAlunoInput.value.trim().toLowerCase();
+
+      const filtrados = !termo
+        ? alunosCache
+        : alunosCache.filter(aluno => {
+            const nome = String(aluno.nome || "").toLowerCase();
+            const id = String(aluno.id || "").toLowerCase();
+            return nome.includes(termo) || id.includes(termo);
+          });
+
+      renderTabelaAlunos(filtrados);
+    }
+
+    function renderTabelaAlunos(alunos) {
+      if (!alunos.length) {
+        alunosTableBody.innerHTML = `
+          <tr>
+            <td colspan="8">Nenhum aluno encontrado.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      alunosTableBody.innerHTML = alunos.map(aluno => `
+        <tr>
+          <td>${escapeHtml(aluno.id ?? "")}</td>
+          <td>${escapeHtml(aluno.nome ?? "")}</td>
+          <td>${escapeHtml(aluno.faixaAtual ?? "-")}</td>
+          <td>${Number(aluno.totalAulas || 0)}</td>
+          <td>${escapeHtml(aluno.proximaFaixa ?? "-")}</td>
+          <td>${Number(aluno.aulasParaProxima || 0)}</td>
+          <td>
+            <span class="badge ${(String(aluno.status || "").toLowerCase() === "ativo") ? "green" : "red"}">
+              ${escapeHtml(aluno.status ?? "-")}
+            </span>
+          </td>
+          <td>
+            <div class="actions-cell">
+              <button class="btn btn-blue btn-mini" onclick='handleEdit(${JSON.stringify(aluno).replace(/'/g, "&apos;")})'>Editar</button>
+              ${
+                String(aluno.status || "").toLowerCase() === "ativo"
+                ? `<button class="btn btn-red btn-mini" onclick="handleToggleStatus('${escapeHtml(aluno.id)}','Inativo')">Inativar</button>`
+                : `<button class="btn btn-success btn-mini" onclick="handleToggleStatus('${escapeHtml(aluno.id)}','Ativo')">Ativar</button>`
+              }
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    window.handleEdit = function(aluno) {
+      openEditModal(aluno);
+    };
+
+    window.handleToggleStatus = async function(id, status) {
+      clearMessage(listaMsg);
+
+      try {
+        showMessage(listaMsg, `${status === "Inativo" ? "Inativando" : "Ativando"} aluno...`, "info");
+
+        const data = await apiPost({
+          action: status === "Inativo" ? "inativarAluno" : "ativarAluno",
+          id
+        });
+
+        if (!data.sucesso) {
+          showMessage(listaMsg, data.mensagem || "Não foi possível atualizar o status.", "error");
+          return;
+        }
+
+        showMessage(listaMsg, data.mensagem || "Status atualizado com sucesso.", "success");
+        await carregarListaAlunos();
+
+      } catch (error) {
+        showMessage(listaMsg, "Erro ao atualizar o status do aluno.", "error");
+      }
+    };
+
+    async function salvarEdicao() {
+      clearMessage(editMsg);
+
+      const id = editId.value.trim();
+      const nome = editNome.value.trim();
+      const senha = editSenha.value.trim();
+      const faixaAtual = editFaixa.value.trim();
+
+      if (!id || !nome || !faixaAtual) {
+        showMessage(editMsg, "Preencha ID, nome e faixa.", "warning");
+        return;
+      }
+
+      try {
+        setButtonLoading(salvarEdicaoBtn, true, "Salvar alterações", "Salvando...");
+
+        const payload = {
+          action: "editarAluno",
+          id,
+          nome,
+          faixaAtual
+        };
+
+        if (senha) payload.senha = senha;
+
+        const data = await apiPost(payload);
+
+        if (!data.sucesso) {
+          showMessage(editMsg, data.mensagem || "Não foi possível salvar as alterações.", "error");
+          return;
+        }
+
+        showMessage(editMsg, data.mensagem || "Aluno atualizado com sucesso.", "success");
+
+        await carregarListaAlunos();
+
+        setTimeout(() => {
+          closeEditModal();
+        }, 500);
+
+      } catch (error) {
+        showMessage(editMsg, "Erro ao salvar alterações.", "error");
+      } finally {
+        setButtonLoading(salvarEdicaoBtn, false, "Salvar alterações");
+      }
+    }
+
+    showAlunoBtn.addEventListener("click", () => showPage("aluno"));
+    showAdminBtn.addEventListener("click", () => showPage("admin"));
+
+    alunoLoginBtn.addEventListener("click", loginAluno);
+    marcarPresencaBtn.addEventListener("click", marcarPresenca);
+    atualizarAlunoBtn.addEventListener("click", atualizarDadosAluno);
+    sairAlunoBtn.addEventListener("click", sairAluno);
+
+    alunoId.addEventListener("keypress", e => {
+      if (e.key === "Enter") alunoSenha.focus();
+    });
+
+    alunoSenha.addEventListener("keypress", e => {
+      if (e.key === "Enter") loginAluno();
+    });
+
+    adminLoginBtn.addEventListener("click", loginAdmin);
+    adminSenha.addEventListener("keypress", e => {
+      if (e.key === "Enter") loginAdmin();
+    });
+
+    adminLogoutBtn.addEventListener("click", sairAdmin);
+    cadastrarAlunoBtn.addEventListener("click", cadastrarAluno);
+    recarregarListaBtn.addEventListener("click", carregarListaAlunos);
+
+    searchAlunoInput.addEventListener("input", renderTabelaFiltrada);
+    limparBuscaBtn.addEventListener("click", () => {
+      searchAlunoInput.value = "";
+      renderTabelaFiltrada();
+    });
+
+    salvarEdicaoBtn.addEventListener("click", salvarEdicao);
+    fecharModalBtn.addEventListener("click", closeEditModal);
+    editModalBackdrop.addEventListener("click", (e) => {
+      if (e.target === editModalBackdrop) closeEditModal();
+    });
+
+    carregarSessaoAluno();
+    carregarSessaoAdmin();
+  </script>
+</body>
+</html>
